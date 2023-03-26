@@ -8,6 +8,18 @@ import pandas as pd
 
 class FEMData(object):
     def __init__(self, yname, angles):
+        '''
+        __init__ takes in a name and a quantity of angles. The number in [] is \
+            passed to self.angles, which is the angle of the indentation. This \
+            indentation angle is then used to find the correct file to read \
+            to obtain the data. \n
+        The class FEMData has member functions init, read_1angle, read_2angles, \
+            and read_4angles. The half-included tip angles used for the read_angle \
+            functions were 70.3˚, 60˚, 50˚, and 80˚. 70.3˚ was used in all \
+            three and 60˚ was used in the last two. The same accuracy could be \
+            achieved with a smaller training data set size for more indentors, \
+            but only one indenter was used to train the single-fidelity NN.
+        '''
         self.yname = yname
         self.angles = angles
 
@@ -148,6 +160,9 @@ class ExpData(object):
 
 
 class BerkovichData(object):
+    '''
+    The class BerkovichData reads a file from a Berkovich
+    '''
     def __init__(self, yname, scale_c=False):
         self.yname = yname
         self.scale_c = scale_c

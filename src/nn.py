@@ -53,6 +53,9 @@ def nn(data):
 
 
 def validation_model(yname, train_size):
+    '''
+    This function uses data from fitting functions of 2D FEM simulations to train the NN (method 1).
+    '''
     datafem = FEMData(yname, [70])
 
     mape = []
@@ -75,6 +78,9 @@ def validation_model(yname, train_size):
 
 
 def validation_FEM(yname, angles, train_size):
+    '''
+    This program uses data from 2D FEM simulations to train the NN (method 2).
+    '''
     datafem = FEMData(yname, angles)
     # datafem = BerkovichData(yname)
 
@@ -140,6 +146,9 @@ def mfnn(data):
 
 
 def validation_mf(yname, train_size):
+    '''
+    mf in this function stands for multi-fidelity. This can eighter use the mathematical model data combined with 2D FEM data or the 2D FEM data combined with 3D (Berkovich) data.
+    '''
     datalow = FEMData(yname, [70])
     # datalow = ModelData(yname, 10000, "forward_n")
     datahigh = BerkovichData(yname)
@@ -256,6 +265,9 @@ def validation_exp_cross(yname):
 
 
 def validation_exp_cross2(yname, train_size):
+    '''
+    This function uses a data from both FEM tests and Berkovich (3D indentation) tests (method 4).
+    '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp1 = ExpData("../data/B3067.csv", yname)
