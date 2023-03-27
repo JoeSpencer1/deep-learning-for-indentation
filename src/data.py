@@ -129,6 +129,12 @@ class ModelData(object):
 
 class ExpData(object):
     def __init__(self, filename, yname):
+        '''
+        ExpData reads in data from an experimental data file. It intakes values \
+            for C, E*, sy, and s for varying plastic strains. The filename it \
+            receives as an argument is the experimental data file that will be \
+            read.
+        '''
         self.filename = filename
         self.yname = yname
 
@@ -160,10 +166,16 @@ class ExpData(object):
 
 
 class BerkovichData(object):
-    '''
-    The class BerkovichData reads a file from a Berkovich
-    '''
     def __init__(self, yname, scale_c=False):
+        '''
+        The class BerkovichData reads a file from a Berkovich indentation test. \
+            It has member functions init and read. init sets the scale and the \
+            name of the dependent variables. read reads the csv of the given name \
+            and stores its C, E*, sy, and n. It can also store dP/dh if scale is \
+            listed as being true. \n
+        The Berkovich indenter has a half angle of 65.3˚ from the tip to the pyramid \
+            surface.
+        '''
         self.yname = yname
         self.scale_c = scale_c
 

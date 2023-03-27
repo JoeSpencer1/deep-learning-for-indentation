@@ -54,7 +54,8 @@ def nn(data):
 
 def validation_model(yname, train_size):
     '''
-    This function uses data from fitting functions of 2D FEM simulations to train the NN (method 1).
+    This function uses data from fitting functions of 2D FEM simulations to train \
+        the NN (method 1).
     '''
     datafem = FEMData(yname, [70])
 
@@ -147,7 +148,9 @@ def mfnn(data):
 
 def validation_mf(yname, train_size):
     '''
-    mf in this function stands for multi-fidelity. This can eighter use the mathematical model data combined with 2D FEM data or the 2D FEM data combined with 3D (Berkovich) data.
+    mf in this function stands for multi-fidelity. This can either use the \
+        mathematical model data combined with 2D FEM data or the 2D FEM data \
+        combined with 3D (Berkovich) data.
     '''
     datalow = FEMData(yname, [70])
     # datalow = ModelData(yname, 10000, "forward_n")
@@ -266,7 +269,8 @@ def validation_exp_cross(yname):
 
 def validation_exp_cross2(yname, train_size):
     '''
-    This function uses a data from both FEM tests and Berkovich (3D indentation) tests (method 4).
+    This function uses a data from both FEM tests and Berkovich (3D indentation) \
+        tests and then trains them against data from experiments (method 4).
     '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
@@ -276,7 +280,17 @@ def validation_exp_cross2(yname, train_size):
     ape = []
     y = []
 
+    '''
+    Shufflesplit trains the neural network. train_size is the proportion of the \
+        data (0-1) used to train the neural netweork. n_splits is the number of \
+        iterations of the training.
+    '''
     kf = ShuffleSplit(n_splits=10, train_size=train_size, random_state=0)
+    '''
+    This function cycles through the training data output from ShuffleSplit. It \
+        displays the training index and records the y values in a .dat file. The \
+        mean and standard deviation  
+    '''
     for train_index, _ in kf.split(dataexp1.X):
         print("\nIteration: {}".format(len(ape)))
         print(train_index)
@@ -388,6 +402,10 @@ def main():
     # return
 
     for train_size in range(1, 10):
+        '''
+        Varying the number of train_sizes allows you to test the advantages of \
+            using a larger or smaller training dataset.
+        '''
         # validation_model("Estar", train_size)
         # validation_FEM("sigma_y", [50, 60, 70, 80], train_size)
         # validation_mf("Estar", train_size)
