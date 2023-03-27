@@ -13,6 +13,11 @@ from data import BerkovichData, ExpData, FEMData, ModelData
 
 
 def svm(data):
+    '''
+    This function is used once, in a commented line of validation_model. It can test \
+        the output of the SVR function and returns the error. SVR stands for Support \
+        Vector Regression.
+    '''
     clf = SVR(kernel="rbf")
     clf.fit(data.train_x, data.train_y[:, 0])
     y_pred = clf.predict(data.test_x)[:, None]
@@ -20,6 +25,11 @@ def svm(data):
 
 
 def mfgp(data):
+    '''
+    mfgp stands for Multi Fidelity Gaussian Process. It is used once in a commented \
+        line of validation_mf. It returns the error between the predicted and \
+        actual values from the high-fidelity data. 
+    '''
     from mfgp import LinearMFGP
 
     model = LinearMFGP(noise=0, n_optimization_restarts=5)
