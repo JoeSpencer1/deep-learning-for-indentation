@@ -39,6 +39,19 @@ def mfgp(data):
 
 
 def nn(data):
+    '''
+    nn creates and trains a neural network to model the data. This function \
+        prints the mean and standard deviation of the values found by the nn. \n \
+    dde.maps.FNN defines a forward neural network with activation ("selu") as the \
+        function name, layer_size (data.train_x.shape[1] + [32] * 2 + [1]) as the \
+        number of neurons in each layer, initializer (LeCun normal) as the weight \
+        initiation, and regularization (["l2", 0.01]). L2 regularization is a \
+        standard regularization also known as Ridge regularization that prevents \
+        the neural network from being skewed too much by data from one set. \n \
+    dde.Model creates a neural network architecture from data (obtained without nn) \
+        and net (the neural netweork just created). This network is then compiled \
+        with a training model.
+    '''
     layer_size = [data.train_x.shape[1]] + [32] * 2 + [1]
     activation = "selu"
     initializer = "LeCun normal"
@@ -51,10 +64,22 @@ def nn(data):
     else:
         lr = 0.001
     epochs = 30000
-
+    '''
+    dde.maps.FNN defines a forward neural network with activation ("selu") as the \
+        function name, layer_size (data.train_x.shape[1] + [32] * 2 + [1]) as the \
+        number of neurons in each layer, initializer (LeCun normal) as the weight \
+        initiation, and regularization (["l2", 0.01]). L2 regularization is a \
+        standard regularization also known as Ridge regularization that prevents \
+        the neural network from being skewed too much by data from one set.
+    '''
     net = dde.maps.FNN(
         layer_size, activation, initializer, regularization=regularization
     )
+    '''
+    dde.Model creates a neural network architecture from data (obtained without nn) \
+        and net (the neural netweork just created). This network is then compiled \
+        with a training model.
+    '''
     model = dde.Model(data, net)
     model.compile(optimizer, lr=lr, loss=loss, metrics=["MAPE"])
     losshistory, train_state = model.train(epochs=epochs)
@@ -65,7 +90,7 @@ def nn(data):
 def validation_model(yname, train_size):
     '''
     This function uses data from fitting functions of 2D FEM simulations to train \
-        the NN (method 1).
+        the NN (method 1). It is commented in the original code.
     '''
     datafem = FEMData(yname, [70])
 
@@ -90,7 +115,8 @@ def validation_model(yname, train_size):
 
 def validation_FEM(yname, angles, train_size):
     '''
-    This program uses data from 2D FEM simulations to train the NN (method 2).
+    This program uses data from 2D FEM simulations to train the NN (method 2). \
+        It is commented in the original code.
     '''
     datafem = FEMData(yname, angles)
     # datafem = BerkovichData(yname)
@@ -124,6 +150,12 @@ def validation_FEM(yname, angles, train_size):
 
 
 def mfnn(data):
+    '''
+    This function at first did not appear to be called anywhere in the code, \
+        which left me a little concerned... It actually is called at various \
+        points. It is compared to the outputs of the different validation \
+        functions and the experimental data during training.
+    '''
     x_dim, y_dim = 3, 1
     activation = "selu"
     initializer = "LeCun normal"
@@ -155,12 +187,12 @@ def mfnn(data):
         train_state.best_y[1],
     )
 
-
 def validation_mf(yname, train_size):
     '''
     mf in this function stands for multi-fidelity. This can either use the \
         mathematical model data combined with 2D FEM data or the 2D FEM data \
-        combined with 3D (Berkovich) data.
+        combined with 3D (Berkovich) data. All references to it are commenyed \
+        at first.
     '''
     datalow = FEMData(yname, [70])
     # datalow = ModelData(yname, 10000, "forward_n")
@@ -195,6 +227,10 @@ def validation_mf(yname, train_size):
 
 
 def validation_scaling(yname):
+    '''
+    This function outputs the value found by scaling functions. The neural \
+        network never comes into play when scaling functions are used.
+    '''
     datafem = FEMData(yname, [70])
     # dataexp = ExpData(yname)
     dataexp = BerkovichData(yname, scale_c=True)
@@ -401,7 +437,7 @@ def validation_exp_cross_transfer(yname):
 
 
 def main():
-    # validation_FEM("Estar", [50, 60, 70, 80], 70)
+    validation_FEM("Estar", [50, 60, 70, 80], 70)
     # validation_mf("Estar", 9)
     # validation_scaling("Estar")
     # validation_exp("Estar")
