@@ -164,7 +164,7 @@ def validation_FEM(yname, angles, train_size):
         mape.append(dde.utils.apply(nn, (data,)))
 
     print(mape)
-    print(yname, train_size, np.mean(mape), np.std(mape))
+    print(yname, "validation_FEM", train_size, np.mean(mape), np.std(mape))
 
 
 def mfnn(data):
@@ -241,7 +241,7 @@ def validation_mf(yname, train_size):
         # mape.append(dde.utils.apply(mfgp, (data,)))
 
     print(mape)
-    print(yname, train_size, np.mean(mape), np.std(mape))
+    print(yname, "validation_mf", train_size, np.mean(mape), np.std(mape))
 
 
 def validation_scaling(yname):
@@ -261,8 +261,7 @@ def validation_scaling(yname):
         )
         mape.append(nn(data))
 
-    print(yname)
-    print(np.mean(mape), np.std(mape))
+    print(yname, "validation_scaling", np.mean(mape), np.std(mape))
 
 
 def validation_exp(yname):
@@ -291,8 +290,8 @@ def validation_exp(yname):
         ape.append(res[:2])
         y.append(res[2])
 
-    print(yname)
-    print(np.mean(ape, axis=0), np.std(ape, axis=0))
+    print(yname, "validation_exp", np.mean(ape, axis=0), np.std(ape, axis=0))
+    print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
@@ -329,8 +328,8 @@ def validation_exp_cross(yname):
         ape.append(res[:2])
         y.append(res[2])
 
-    print(yname)
-    print(np.mean(ape, axis=0), np.std(ape, axis=0))
+    print(yname, "validation_exp_cross", np.mean(ape, axis=0), np.std(ape, axis=0))
+    print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
@@ -374,8 +373,8 @@ def validation_exp_cross2(yname, train_size):
         ape.append(res[:2])
         y.append(res[2])
 
-    print(yname, train_size)
-    print(np.mean(ape, axis=0), np.std(ape, axis=0))
+    print(yname, "validation_exp_cross2", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
+    print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
@@ -402,8 +401,8 @@ def validation_exp_cross3(yname):
         ape.append(res[:2])
         y.append(res[2])
 
-    print(yname)
-    print(np.mean(ape, axis=0), np.std(ape, axis=0))
+    print(yname, "validation_exp_cross3", np.mean(ape, axis=0), np.std(ape, axis=0))
+    print("Saved to  y.dat.")
     np.savetxt("y.dat", np.hstack(y))
 
 
@@ -466,9 +465,9 @@ def main():
     validation_FEM 
     '''
     #''
-    validation_FEM("Estar", [50, 60, 70, 80], 70)
-    validation_mf("Estar", 9)
-    validation_scaling("Estar")
+    validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape).
+    validation_mf("Estar", 9) # print yname, train_size, mean(mape), std(mape)
+    validation_scaling("Estar") # print yname, mean(mape), std(mape)
     validation_exp("Estar")
     validation_exp_cross("Estar")
     validation_exp_cross2("Estar", 10)
