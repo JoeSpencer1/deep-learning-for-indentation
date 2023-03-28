@@ -28,6 +28,8 @@ validation_exp_cross2           Further trains MFNN
 validation_exp_crosse           Trains the MFNN more
 validation_exp_cross_transfer   Finishes training MFNN. Significant parts of this function are commented.
 main                            Main function.
+
+MAPE stands for Mean Absolute Percentage Error.
 '''
 
 def svm(data):
