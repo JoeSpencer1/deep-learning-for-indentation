@@ -11,6 +11,24 @@ from sklearn.model_selection import KFold, LeaveOneOut, RepeatedKFold, ShuffleSp
 import deepxde as dde
 from data import BerkovichData, ExpData, FEMData, ModelData
 
+'''
+General summary:
+Function                        Purpose
+svm                             Used to check validation_model
+mfgp                            In a commented line of validation_mf
+nn                              Creates a regular nn, used in validation_model and validation_scaling.
+validation_model                Creates a model from 2D FEM data only
+validation_FEM                  A NN is trained with 2D FEM data only. 3D data is commented.
+mfnn                            This function trains a MFNN with a single dataset.
+validation_mf                   This makes sure the MFNN is within bounds set by 2D and Berkovich data.
+validation_scaling              This makes sure the MFNN is within scaling functions
+validation_exp                  Makes sure the MFNN is within exponential functions
+validation_exp_cross            Trains the MFNN
+validation_exp_cross2           Further trains MFNN
+validation_exp_crosse           Trains the MFNN more
+validation_exp_cross_transfer   Finishes training MFNN. Significant parts of this function are commented.
+main                            Main function.
+'''
 
 def svm(data):
     '''
@@ -115,7 +133,7 @@ def validation_model(yname, train_size):
 
 def validation_FEM(yname, angles, train_size):
     '''
-    This program uses data from 2D FEM simulations to train the NN (method 2). \
+    This program uses data from 2D FEM simulations to train the NN (method 2?). \
         It is commented in the original code.
     '''
     datafem = FEMData(yname, angles)
@@ -248,6 +266,10 @@ def validation_scaling(yname):
 
 
 def validation_exp(yname):
+    '''
+    This function uses data from FEM simulations and experiment. It forms a \
+        multi-fidelity data set for this.
+    '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp = ExpData("../data/B3067.csv", yname)
@@ -278,8 +300,7 @@ def validation_exp_cross(yname):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp = ExpData("../data/B3067.csv", yname)
-#    train_size = 10
-    train_size = 100
+    train_size = 10
 
     ape = []
     y = []
@@ -402,6 +423,9 @@ def validation_exp_cross_transfer(yname):
         standardize=True
     )
     res = dde.utils.apply(mfnn, (data,))
+    '''
+    Not sure what's going on here. The function returns but there is still more code.
+    '''
     return
 
     ape = []
@@ -437,15 +461,21 @@ def validation_exp_cross_transfer(yname):
 
 
 def main():
+    '''
+    The main function selects which approach will be used and then performs it. \n
+    validation_FEM 
+    '''
+    #''
     validation_FEM("Estar", [50, 60, 70, 80], 70)
-    # validation_mf("Estar", 9)
-    # validation_scaling("Estar")
-    # validation_exp("Estar")
-    # validation_exp_cross("Estar")
-    # validation_exp_cross2("Estar", 10)
-    # validation_exp_cross3("Estar")
-    # validation_exp_cross_transfer("Estar")
-    # return
+    validation_mf("Estar", 9)
+    validation_scaling("Estar")
+    validation_exp("Estar")
+    validation_exp_cross("Estar")
+    validation_exp_cross2("Estar", 10)
+    validation_exp_cross3("Estar")
+    validation_exp_cross_transfer("Estar")
+    return
+    #''
 
     for train_size in range(1, 10):
         '''
