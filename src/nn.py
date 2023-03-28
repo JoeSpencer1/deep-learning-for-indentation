@@ -464,8 +464,11 @@ def validation_exp_cross_transfer(yname):
 def main():
     '''
     The main function selects which approach will be used and then performs it. \n
-    validation_FEM 
+    Any code aboce the multi-line comment is made by me.
     '''
+    validation_FEM("Estar", [70], 80)
+    # validation_FEM("sigma_y", [70], 80)
+    return
     #''
     validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape).
     validation_mf("Estar", 9) # print yname, train_size, mean(mape), std(mape)
