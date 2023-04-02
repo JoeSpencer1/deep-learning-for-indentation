@@ -5,6 +5,18 @@ from __future__ import print_function
 import numpy as np
 import pandas as pd
 
+'''
+I think 3N was not used in the papar.
+# Scale dP/dh from 3N to hm = 0.2um
+    df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+
+# Scale dP/dh from Pm to hm = 0.2um
+    df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
+# Scale dP/dh from hm to hm = 0.2um
+    df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
+# Scale c* from Berkovich to Conical
+    df["dP/dh (N/m)"] *= 1.128 / 1.167
+'''
 
 class FEMData(object):
     def __init__(self, yname, angles):

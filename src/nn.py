@@ -30,6 +30,20 @@ validation_exp_cross_transfer   Finishes training MFNN. Significant parts of thi
 main                            Main function.
 
 MAPE stands for Mean Absolute Percentage Error.
+
+From GitHub:
+    data.py: The classes are used to read the data file. Remember to uncomment certain line in ExpData to scale dP/dh.
+    nn.py: The main functions of multi-fidelity neural networks.
+    model.py: The fitting function method. Some parameters are hard-coded in the code, and you should modify them for different cases.
+    fit_n.py: Fit strain-hardening exponent.
+    mfgp.py: Multi-fidelity Gaussian process regression.
+
+Hard-coded/commented variables:
+    nn.py:
+validation_model: mape.append(svm(data))
+validation_FEM: datafem = BerkovichData(yname)
+mfnn: checker = dde.callbacks.ModelCheckpoint("model/model.ckpt", verbose=1, save_better_only=True, period=1000), losshistory, train_state = model.train(epochs=30000, callbacks=[checker]), losshistory, train_state = model.train(epochs=5000, model_restore_path="model/model.ckpt-28000")
+
 '''
 
 def svm(data):
@@ -466,8 +480,8 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    validation_FEM("Estar", [70], 80)
-    # validation_FEM("sigma_y", [70], 80)
+    validation_FEM("Estar", [70], 60)
+    # validation_FEM("sigma_y", [70], 10)
     return
     #''
     validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape).
