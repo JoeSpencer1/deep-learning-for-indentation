@@ -43,6 +43,21 @@ Hard-coded/commented variables:
 validation_model: mape.append(svm(data))
 validation_FEM: datafem = BerkovichData(yname)
 mfnn: checker = dde.callbacks.ModelCheckpoint("model/model.ckpt", verbose=1, save_better_only=True, period=1000), losshistory, train_state = model.train(epochs=30000, callbacks=[checker]), losshistory, train_state = model.train(epochs=5000, model_restore_path="model/model.ckpt-28000")
+validation_mf: datalow = ModelData(yname, 10000, "forward_n"), datahigh = FEMData(yname, [70]), kf = LeaveOneOut(), mape.append(dde.utils.apply(mfgp, (data,)))
+validation_exp_cross: cases = range(6), for train_index in itertools.combinations(cases, 3): train_index = list(train_index) test_index = list(set(cases) - set(train_index))
+validation_exp_cross_transfer: Roughly half the function
+main: Functions are uncommented depending on the application.
+    model.py:
+forward_model: cstar = 1.2370
+inverse_model: cstar = 1.2370
+test_model: d = BerkovichData("Estar"), d = ExpData("B3067.csv", "Estar"), d = BerkovichData("sigma_y"), d = ExpData("B3067.csv", "sigma_y"), d = FEMData("n", [70])
+gen_forward: sigma_y = random.uniform(0.03, 5.3)
+main: print(inverse_model(27.4e9, 0.902, 4768e3 * 0.2 * (27.4 / 3)**0.5 * 10**(-1.5), 0.3, 0.2e-6, nu_i=0.07, E_i=1100e9)), test_inverse(), test_inverse_dual(), gen_inverse()
+    data.py
+read_1angle: df = df.loc[df["n"] <= 0.3], df["dP/dh (N/m)"] *= 1.167 / 1.128, sigma = 0.2, df["E* (GPa)"] *= 1 + sigma * np.random.randn(len(df)), df["sy (GPa)"] *= 1 + sigma * np.random.randn(len(df))
+read_2angles: df = df.loc[:100], self.X = df[["C (GPa)", "dP/dh (N/m)", "C (GPa)_60", "dP/dh (N/m)_60"]].values
+read: df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5), df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5), df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"], df["dP/dh (N/m)"] *= 1.128 / 1.167
+
 
 '''
 
