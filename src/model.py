@@ -9,7 +9,9 @@ import pandas as pd
 from scipy import optimize
 
 from data import BerkovichData, ExpData, FEMData
-
+'''
+In this file you need to select conical or Berkovich indentations for c* in forward_model and inverse_model. In test_inverse you also need to select d for E* and σy.
+'''
 
 def Pi1(Estar_sigma33):
     x = np.log(Estar_sigma33)
