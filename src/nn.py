@@ -466,7 +466,8 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    validation_FEM("Estar", [70], 80)
+    validation_exp_cross2("Estar", 20)
+    # validation_FEM("Estar", [70], 80)
     # validation_FEM("sigma_y", [70], 80)
     return
     #''
