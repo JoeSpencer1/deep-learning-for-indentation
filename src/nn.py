@@ -435,6 +435,9 @@ def validation_exp_cross3(yname):
         y.append(res[2])
 
     print(yname, "validation_exp_cross3", np.mean(ape, axis=0), np.std(ape, axis=0))
+    with open('Output.txt', 'a') as f:
+        f.write(yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+    print("Saved to ", yname, ".dat.")
     print("Saved to  y.dat.")
     np.savetxt("y.dat", np.hstack(y))
 
@@ -497,24 +500,28 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    # validation_exp_cross2("Estar", 1)
+    '''
+    validation_exp_cross2("Estar", 1)
+    validation_exp_cross2("Estar", 2)
+    validation_exp_cross2("Estar", 3)
+    validation_exp_cross2("Estar", 4)
+    validation_exp_cross2("Estar", 5)
+    validation_exp_cross2("Estar", 6)
+    validation_exp_cross2("Estar", 8)
+    validation_exp_cross2("Estar", 10)
+    validation_exp_cross2("Estar", 20)
     validation_exp_cross2("sigma_y", 1)
-    # validation_exp_cross2("Estar", 2)
     validation_exp_cross2("sigma_y", 2)
-    # validation_exp_cross2("Estar", 3)
     validation_exp_cross2("sigma_y", 3)
-    # validation_exp_cross2("Estar", 4)
     validation_exp_cross2("sigma_y", 4)
-    # validation_exp_cross2("Estar", 5)
     validation_exp_cross2("sigma_y", 5)
-    # validation_exp_cross2("Estar", 6)
     validation_exp_cross2("sigma_y", 6)
-    # validation_exp_cross2("Estar", 8)
     validation_exp_cross2("sigma_y", 8)
-    # validation_exp_cross2("Estar", 10)
     validation_exp_cross2("sigma_y", 10)
-    # validation_exp_cross2("Estar", 20)
     validation_exp_cross2("sigma_y", 20)
+    '''
+    validation_exp_cross3("Estar")
+    validation_exp_cross3("sigma_y")
     # validation_FEM("Estar", [70], 80)
     # validation_FEM("sigma_y", [70], 80)
     return
