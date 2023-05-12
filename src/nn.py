@@ -368,7 +368,7 @@ def validation_exp_cross(yname, train_size):
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
-def validation_exp_cross2(yname, train_size):
+def validation_exp_cross2(yname, train_size, dataset):
     '''
     This function uses a data from both FEM tests and Berkovich (3D indentation) \
         tests and then trains them against data from experiments (method 4).
@@ -376,7 +376,14 @@ def validation_exp_cross2(yname, train_size):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp1 = ExpData("../data/B3067.csv", yname)
-    dataexp2 = ExpData("../data/B3090.csv", yname)
+    if dataset == "B3090":
+        dataexp2 = ExpData("../data/B3090.csv", yname)
+    if dataset == "B3067":
+        dataexp2 = ExpData("../data/B3067.csv", yname)
+    if dataset == "B6090":
+        dataexp2 = ExpData("../data/B6090.csv", yname)
+    if dataset == "S3067":
+        dataexp2 = ExpData("../data/S3067.csv", yname)
 
     ape = []
     y = []
@@ -410,7 +417,7 @@ def validation_exp_cross2(yname, train_size):
 
     print(yname, "validation_exp_cross2", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write("cross2 " + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross2 " + dataset + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -446,11 +453,19 @@ def validation_exp_cross3(yname):
     np.savetxt("y.dat", np.hstack(y))
 
 
-def validation_exp_cross_transfer(yname, train_size):
+def validation_exp_cross_transfer(yname, train_size, dataset):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
-    dataexp = ExpData("../data/B3090.csv", yname)
-    train_size = 5
+    if dataset == "B3090":
+        dataexp = ExpData("../data/B3090.csv", yname)
+    if dataset == "B3067":
+        dataexp = ExpData("../data/B3067.csv", yname)
+    if dataset == "B6090":
+        dataexp = ExpData("../data/B6090.csv", yname)
+    if dataset == "S3067":
+        dataexp = ExpData("../data/S3067.csv", yname)
+    
+    #train_size = 5
 
     data = dde.data.MfDataSet(
         X_lo_train=datalow.X,
@@ -495,7 +510,7 @@ def validation_exp_cross_transfer(yname, train_size):
         y.append(res[2])
 
     with open('Output.txt', 'a') as f:
-        f.write("crosstrans " + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("crosstrans " + dataset  + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print(yname)
     print(np.mean(ape, axis=0), np.std(ape, axis=0))
     np.savetxt(yname + ".dat", np.hstack(y).T)
@@ -506,26 +521,125 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    '''
-    validation_exp_cross2("Estar", 1)
-    validation_exp_cross2("Estar", 2)
-    validation_exp_cross2("Estar", 3)
-    validation_exp_cross2("Estar", 4)
-    validation_exp_cross2("Estar", 5)
-    validation_exp_cross2("Estar", 6)
-    validation_exp_cross2("Estar", 8)
-    validation_exp_cross2("Estar", 10)
-    validation_exp_cross2("Estar", 20)
-    validation_exp_cross2("sigma_y", 1)
-    validation_exp_cross2("sigma_y", 2)
-    validation_exp_cross2("sigma_y", 3)
-    validation_exp_cross2("sigma_y", 4)
-    validation_exp_cross2("sigma_y", 5)
-    validation_exp_cross2("sigma_y", 6)
-    validation_exp_cross2("sigma_y", 8)
-    validation_exp_cross2("sigma_y", 10)
-    validation_exp_cross2("sigma_y", 20)
-    '''
+    
+    validation_exp_cross2("Estar", 1, "B6090")
+    validation_exp_cross2("Estar", 2, "B6090")
+    validation_exp_cross2("Estar", 3, "B6090")
+    validation_exp_cross2("Estar", 4, "B6090")
+    validation_exp_cross2("Estar", 5, "B6090")
+    validation_exp_cross2("Estar", 6, "B6090")
+    validation_exp_cross2("Estar", 8, "B6090")
+    validation_exp_cross2("Estar", 10, "B6090")
+    validation_exp_cross2("Estar", 20, "B6090")
+    validation_exp_cross2("sigma_y", 1, "B6090")
+    validation_exp_cross2("sigma_y", 2, "B6090")
+    validation_exp_cross2("sigma_y", 3, "B6090")
+    validation_exp_cross2("sigma_y", 4, "B6090")
+    validation_exp_cross2("sigma_y", 5, "B6090")
+    validation_exp_cross2("sigma_y", 6, "B6090")
+    validation_exp_cross2("sigma_y", 8, "B6090")
+    validation_exp_cross2("sigma_y", 10, "B6090")
+    validation_exp_cross2("sigma_y", 20, "B6090")
+    
+    validation_exp_cross2("Estar", 1, "S3067")
+    validation_exp_cross2("Estar", 2, "S3067")
+    validation_exp_cross2("Estar", 3, "S3067")
+    validation_exp_cross2("Estar", 4, "S3067")
+    validation_exp_cross2("Estar", 5, "S3067")
+    validation_exp_cross2("Estar", 6, "S3067")
+    validation_exp_cross2("Estar", 8, "S3067")
+    validation_exp_cross2("Estar", 10, "S3067")
+    validation_exp_cross2("Estar", 20, "S3067")
+    validation_exp_cross2("sigma_y", 1, "S3067")
+    validation_exp_cross2("sigma_y", 2, "S3067")
+    validation_exp_cross2("sigma_y", 3, "S3067")
+    validation_exp_cross2("sigma_y", 4, "S3067")
+    validation_exp_cross2("sigma_y", 5, "S3067")
+    validation_exp_cross2("sigma_y", 6, "S3067")
+    validation_exp_cross2("sigma_y", 8, "S3067")
+    validation_exp_cross2("sigma_y", 10, "S3067")
+    validation_exp_cross2("sigma_y", 20, "S3067")
+    
+    
+    validation_exp_cross_transfer("Estar", 1, "B3090")
+    validation_exp_cross_transfer("Estar", 2, "B3090")
+    validation_exp_cross_transfer("Estar", 3, "B3090")
+    validation_exp_cross_transfer("Estar", 4, "B3090")
+    validation_exp_cross_transfer("Estar", 5, "B3090")
+    validation_exp_cross_transfer("Estar", 6, "B3090")
+    validation_exp_cross_transfer("Estar", 8, "B3090")
+    validation_exp_cross_transfer("Estar", 10, "B3090")
+    validation_exp_cross_transfer("Estar", 20, "B3090")
+    validation_exp_cross_transfer("sigma_y", 1, "B3090")
+    validation_exp_cross_transfer("sigma_y", 2, "B3090")
+    validation_exp_cross_transfer("sigma_y", 3, "B3090")
+    validation_exp_cross_transfer("sigma_y", 4, "B3090")
+    validation_exp_cross_transfer("sigma_y", 5, "B3090")
+    validation_exp_cross_transfer("sigma_y", 6, "B3090")
+    validation_exp_cross_transfer("sigma_y", 8, "B3090")
+    validation_exp_cross_transfer("sigma_y", 10, "B3090")
+    validation_exp_cross_transfer("sigma_y", 20, "B3090")
+    
+    
+    validation_exp_cross_transfer("Estar", 1, "B3067")
+    validation_exp_cross_transfer("Estar", 2, "B3067")
+    validation_exp_cross_transfer("Estar", 3, "B3067")
+    validation_exp_cross_transfer("Estar", 4, "B3067")
+    validation_exp_cross_transfer("Estar", 5, "B3067")
+    validation_exp_cross_transfer("Estar", 6, "B3067")
+    validation_exp_cross_transfer("Estar", 8, "B3067")
+    validation_exp_cross_transfer("Estar", 10, "B3067")
+    validation_exp_cross_transfer("Estar", 20, "B3067")
+    validation_exp_cross_transfer("sigma_y", 1, "B3067")
+    validation_exp_cross_transfer("sigma_y", 2, "B3067")
+    validation_exp_cross_transfer("sigma_y", 3, "B3067")
+    validation_exp_cross_transfer("sigma_y", 4, "B3067")
+    validation_exp_cross_transfer("sigma_y", 5, "B3067")
+    validation_exp_cross_transfer("sigma_y", 6, "B3067")
+    validation_exp_cross_transfer("sigma_y", 8, "B3067")
+    validation_exp_cross_transfer("sigma_y", 10, "B3067")
+    validation_exp_cross_transfer("sigma_y", 20, "B3067")
+    
+    
+    validation_exp_cross_transfer("Estar", 1, "B6090")
+    validation_exp_cross_transfer("Estar", 2, "B6090")
+    validation_exp_cross_transfer("Estar", 3, "B6090")
+    validation_exp_cross_transfer("Estar", 4, "B6090")
+    validation_exp_cross_transfer("Estar", 5, "B6090")
+    validation_exp_cross_transfer("Estar", 6, "B6090")
+    validation_exp_cross_transfer("Estar", 8, "B6090")
+    validation_exp_cross_transfer("Estar", 10, "B6090")
+    validation_exp_cross_transfer("Estar", 20, "B6090")
+    validation_exp_cross_transfer("sigma_y", 1, "B6090")
+    validation_exp_cross_transfer("sigma_y", 2, "B6090")
+    validation_exp_cross_transfer("sigma_y", 3, "B6090")
+    validation_exp_cross_transfer("sigma_y", 4, "B6090")
+    validation_exp_cross_transfer("sigma_y", 5, "B6090")
+    validation_exp_cross_transfer("sigma_y", 6, "B6090")
+    validation_exp_cross_transfer("sigma_y", 8, "B6090")
+    validation_exp_cross_transfer("sigma_y", 10, "B6090")
+    validation_exp_cross_transfer("sigma_y", 20, "B6090")
+    
+    
+    validation_exp_cross_transfer("Estar", 1, "S3067")
+    validation_exp_cross_transfer("Estar", 2, "S3067")
+    validation_exp_cross_transfer("Estar", 3, "S3067")
+    validation_exp_cross_transfer("Estar", 4, "S3067")
+    validation_exp_cross_transfer("Estar", 5, "S3067")
+    validation_exp_cross_transfer("Estar", 6, "S3067")
+    validation_exp_cross_transfer("Estar", 8, "S3067")
+    validation_exp_cross_transfer("Estar", 10, "S3067")
+    validation_exp_cross_transfer("Estar", 20, "S3067")
+    validation_exp_cross_transfer("sigma_y", 1, "S3067")
+    validation_exp_cross_transfer("sigma_y", 2, "S3067")
+    validation_exp_cross_transfer("sigma_y", 3, "S3067")
+    validation_exp_cross_transfer("sigma_y", 4, "S3067")
+    validation_exp_cross_transfer("sigma_y", 5, "S3067")
+    validation_exp_cross_transfer("sigma_y", 6, "S3067")
+    validation_exp_cross_transfer("sigma_y", 8, "S3067")
+    validation_exp_cross_transfer("sigma_y", 10, "S3067")
+    validation_exp_cross_transfer("sigma_y", 20, "S3067")
+
     '''
     validation_exp_cross3("Estar")
     validation_exp_cross3("sigma_y")
@@ -538,9 +652,10 @@ def main():
     validation_exp_cross("Estar", 10)
     validation_exp_cross("sigma_y", 10)
     '''
+    '''
     validation_exp("Estar")
     validation_exp("sigma_y")
-
+    '''
     # validation_FEM("Estar", [70], 80)
     # validation_FEM("sigma_y", [70], 80)
     return
