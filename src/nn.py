@@ -322,11 +322,13 @@ def validation_exp(yname):
         y.append(res[2])
 
     print(yname, "validation_exp", np.mean(ape, axis=0), np.std(ape, axis=0))
+    with open('Output.txt', 'a') as f:
+        f.write("exp " + yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
-def validation_exp_cross(yname):
+def validation_exp_cross(yname, train_size):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp = ExpData("../data/B3067.csv", yname)
@@ -359,7 +361,9 @@ def validation_exp_cross(yname):
         ape.append(res[:2])
         y.append(res[2])
 
-    print(yname, "validation_exp_cross", np.mean(ape, axis=0), np.std(ape, axis=0))
+    with open('Output.txt', 'a') as f:
+        f.write("cross " + yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+    print(yname, "validation_exp_cross", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -406,7 +410,7 @@ def validation_exp_cross2(yname, train_size):
 
     print(yname, "validation_exp_cross2", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write(yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross2 " + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -436,13 +440,13 @@ def validation_exp_cross3(yname):
 
     print(yname, "validation_exp_cross3", np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write(yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross3 " + yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     print("Saved to  y.dat.")
     np.savetxt("y.dat", np.hstack(y))
 
 
-def validation_exp_cross_transfer(yname):
+def validation_exp_cross_transfer(yname, train_size):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp = ExpData("../data/B3090.csv", yname)
@@ -461,7 +465,7 @@ def validation_exp_cross_transfer(yname):
     '''
     Not sure what's going on here. The function returns but there is still more code.
     '''
-    return
+#    return
 
     ape = []
     y = []
@@ -490,6 +494,8 @@ def validation_exp_cross_transfer(yname):
         ape.append(res[:2])
         y.append(res[2])
 
+    with open('Output.txt', 'a') as f:
+        f.write("crosstrans " + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print(yname)
     print(np.mean(ape, axis=0), np.std(ape, axis=0))
     np.savetxt(yname + ".dat", np.hstack(y).T)
@@ -520,13 +526,26 @@ def main():
     validation_exp_cross2("sigma_y", 10)
     validation_exp_cross2("sigma_y", 20)
     '''
+    '''
     validation_exp_cross3("Estar")
     validation_exp_cross3("sigma_y")
+    '''
+    '''
+    validation_exp_cross_transfer("Estar", 5)
+    validation_exp_cross_transfer("sigma_y", 5)
+    '''
+    '''
+    validation_exp_cross("Estar", 10)
+    validation_exp_cross("sigma_y", 10)
+    '''
+    validation_exp("Estar")
+    validation_exp("sigma_y")
+
     # validation_FEM("Estar", [70], 80)
     # validation_FEM("sigma_y", [70], 80)
     return
     #''
-    validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape).
+    validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape)
     validation_mf("Estar", 9) # print yname, train_size, mean(mape), std(mape)
     validation_scaling("Estar") # print yname, mean(mape), std(mape)
     validation_exp("Estar")
