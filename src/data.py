@@ -157,14 +157,18 @@ class ExpData(object):
 
     def read(self):
         df = pd.read_csv(self.filename)
+
+        #
         # Scale dP/dh from 3N to hm = 0.2um
-        # df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from Pm to hm = 0.2um
         # df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from hm to hm = 0.2um
         # df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
         # Scale c* from Berkovich to Conical
         # df["dP/dh (N/m)"] *= 1.128 / 1.167
+        #
+
         print(df.describe())
 
         self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values

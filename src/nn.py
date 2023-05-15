@@ -158,6 +158,8 @@ def validation_model(yname, train_size):
         # mape.append(svm(data))
         mape.append(nn(data))
 
+    with open('Output.txt', 'a') as f:
+        f.write("model " + yname + " " + str(train_size) + str(np.mean(mape, axis=0)) + str(np.std(mape, axis=0)) + '\n')
     print(yname, train_size)
     print(np.mean(mape), np.std(mape))
 
@@ -271,8 +273,10 @@ def validation_mf(yname, train_size):
         mape.append(dde.utils.apply(mfnn, (data,))[0])
         # mape.append(dde.utils.apply(mfgp, (data,)))
 
+    with open('Output.txt', 'a') as f:
+        f.write("mf " + yname + " " + str(train_size) + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
     print(mape)
-    print(yname, "validation_mf", train_size, np.mean(mape), np.std(mape))
+    print(yname, "validation_mf ", train_size, np.mean(mape), np.std(mape))
 
 
 def validation_scaling(yname):
@@ -422,15 +426,22 @@ def validation_exp_cross2(yname, train_size, dataset):
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
-def validation_exp_cross3(yname):
+def validation_exp_cross3(yname, numitrs, expdata):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
-    dataexp1 = ExpData("../data/Al6061.csv", yname)
-    dataexp2 = ExpData("../data/Al7075.csv", yname)
+    if (expdata == "Al6061"):
+        dataexp1 = ExpData("../data/Al6061.csv", yname)
+        dataexp2 = ExpData("../data/Al6061.csv", yname)
+    elif (expdata == "Al7075"):
+        dataexp1 = ExpData("../data/Al7075.csv", yname)
+        dataexp2 = ExpData("../data/Al7075.csv", yname)
+    else:
+        dataexp1 = ExpData("../data/Al6061.csv", yname)
+        dataexp2 = ExpData("../data/Al7075.csv", yname)
 
     ape = []
     y = []
-    for _ in range(10):
+    for _ in range(numitrs): 
         print("\nIteration: {}".format(len(ape)))
         data = dde.data.MfDataSet(
             X_lo_train=datalow.X,
@@ -521,7 +532,58 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    
+    '''
+    validation_exp_cross3("sigma_y", 10, "Al6061")
+    validation_exp_cross3("Estar", 10, "Al6061")
+    validation_exp_cross3("sigma_0.033", 10, "Al6061")
+    validation_exp_cross3("sigma_0.066", 10, "Al6061")
+    validation_exp_cross3("sigma_0.1", 10, "Al6061")
+    validation_exp_cross3("sigma_y", 10, "Al7075")
+    validation_exp_cross3("Estar", 10, "Al7075")
+    validation_exp_cross3("sigma_0.033", 10, "Al7075")
+    validation_exp_cross3("sigma_0.066", 10, "Al7075")
+    validation_exp_cross3("sigma_0.1", 10, "Al7075")
+    '''
+
+    validation_mf("sigma_y", 10)
+    validation_mf("Estar", 10)
+    validation_mf("sigma_0.033", 10)
+    validation_mf("sigma_0.066", 10)
+    validation_mf("sigma_0.1", 10)
+    validation_mf("sigma_y", 10)
+    validation_mf("Estar", 10)
+    validation_mf("sigma_0.033", 10)
+    validation_mf("sigma_0.066", 10)
+    validation_mf("sigma_0.1", 10)
+
+    '''
+    validation_model("sigma_y", 10)
+    validation_model("Estar", 10)
+    validation_model("sigma_y", 10)
+    validation_model("Estar", 10)
+    '''
+    '''
+    validation_model("Estar", 1)
+    validation_model("Estar", 2)
+    validation_model("Estar", 3)
+    validation_model("Estar", 4)
+    validation_model("Estar", 5)
+    validation_model("Estar", 6)
+    validation_model("Estar", 8)
+    validation_model("Estar", 10)
+    validation_model("Estar", 20)
+    validation_model("sigma_y", 1)
+    validation_model("sigma_y", 1)
+    validation_model("sigma_y", 2)
+    validation_model("sigma_y", 3)
+    validation_model("sigma_y", 4)
+    validation_model("sigma_y", 5)
+    validation_model("sigma_y", 6)
+    validation_model("sigma_y", 8)
+    validation_model("sigma_y", 10)
+    validation_model("sigma_y", 20)
+    '''
+    '''
     validation_exp_cross2("Estar", 1, "B6090")
     validation_exp_cross2("Estar", 2, "B6090")
     validation_exp_cross2("Estar", 3, "B6090")
@@ -540,7 +602,8 @@ def main():
     validation_exp_cross2("sigma_y", 8, "B6090")
     validation_exp_cross2("sigma_y", 10, "B6090")
     validation_exp_cross2("sigma_y", 20, "B6090")
-    
+    '''
+    '''
     validation_exp_cross2("Estar", 1, "S3067")
     validation_exp_cross2("Estar", 2, "S3067")
     validation_exp_cross2("Estar", 3, "S3067")
@@ -559,8 +622,8 @@ def main():
     validation_exp_cross2("sigma_y", 8, "S3067")
     validation_exp_cross2("sigma_y", 10, "S3067")
     validation_exp_cross2("sigma_y", 20, "S3067")
-    
-    
+    '''
+    '''
     validation_exp_cross_transfer("Estar", 1, "B3090")
     validation_exp_cross_transfer("Estar", 2, "B3090")
     validation_exp_cross_transfer("Estar", 3, "B3090")
@@ -579,8 +642,8 @@ def main():
     validation_exp_cross_transfer("sigma_y", 8, "B3090")
     validation_exp_cross_transfer("sigma_y", 10, "B3090")
     validation_exp_cross_transfer("sigma_y", 20, "B3090")
-    
-    
+    '''
+    '''
     validation_exp_cross_transfer("Estar", 1, "B3067")
     validation_exp_cross_transfer("Estar", 2, "B3067")
     validation_exp_cross_transfer("Estar", 3, "B3067")
@@ -599,8 +662,8 @@ def main():
     validation_exp_cross_transfer("sigma_y", 8, "B3067")
     validation_exp_cross_transfer("sigma_y", 10, "B3067")
     validation_exp_cross_transfer("sigma_y", 20, "B3067")
-    
-    
+    '''
+    '''
     validation_exp_cross_transfer("Estar", 1, "B6090")
     validation_exp_cross_transfer("Estar", 2, "B6090")
     validation_exp_cross_transfer("Estar", 3, "B6090")
@@ -619,8 +682,8 @@ def main():
     validation_exp_cross_transfer("sigma_y", 8, "B6090")
     validation_exp_cross_transfer("sigma_y", 10, "B6090")
     validation_exp_cross_transfer("sigma_y", 20, "B6090")
-    
-    
+    '''
+    '''
     validation_exp_cross_transfer("Estar", 1, "S3067")
     validation_exp_cross_transfer("Estar", 2, "S3067")
     validation_exp_cross_transfer("Estar", 3, "S3067")
@@ -639,7 +702,7 @@ def main():
     validation_exp_cross_transfer("sigma_y", 8, "S3067")
     validation_exp_cross_transfer("sigma_y", 10, "S3067")
     validation_exp_cross_transfer("sigma_y", 20, "S3067")
-
+    '''
     '''
     validation_exp_cross3("Estar")
     validation_exp_cross3("sigma_y")
