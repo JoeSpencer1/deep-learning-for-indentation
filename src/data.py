@@ -160,9 +160,10 @@ class ExpData(object):
 
         #
         # Scale dP/dh from 3N to hm = 0.2um
-        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+# Use this one for validation_mf() and maybe for cross3().
+#        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from Pm to hm = 0.2um
-        # df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
+        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from hm to hm = 0.2um
         # df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
         # Scale c* from Berkovich to Conical

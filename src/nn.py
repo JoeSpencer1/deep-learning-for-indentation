@@ -532,6 +532,10 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
+
+    validation_exp_cross2("Estar", 10, "B6090")
+    validation_exp_cross2("sigma_y", 20, "B6090")
+
     '''
     validation_exp_cross3("sigma_y", 10, "Al6061")
     validation_exp_cross3("Estar", 10, "Al6061")
@@ -544,7 +548,7 @@ def main():
     validation_exp_cross3("sigma_0.066", 10, "Al7075")
     validation_exp_cross3("sigma_0.1", 10, "Al7075")
     '''
-
+    '''
     validation_mf("sigma_y", 10)
     validation_mf("Estar", 10)
     validation_mf("sigma_0.033", 10)
@@ -555,7 +559,7 @@ def main():
     validation_mf("sigma_0.033", 10)
     validation_mf("sigma_0.066", 10)
     validation_mf("sigma_0.1", 10)
-
+    '''
     '''
     validation_model("sigma_y", 10)
     validation_model("Estar", 10)
