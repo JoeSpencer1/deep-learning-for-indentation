@@ -52,7 +52,8 @@ class FEMData(object):
         df = df.loc[~((df["n"] > 0.3) & (df["sy/E*"] >= 0.03))]
         # df = df.loc[df["n"] <= 0.3]
         # Scale c* from Conical to Berkovich
-        # df["dP/dh (N/m)"] *= 1.167 / 1.128
+# Originally commented
+        df["dP/dh (N/m)"] *= 1.167 / 1.128
         # Add noise
         # sigma = 0.2
         # df["E* (GPa)"] *= 1 + sigma * np.random.randn(len(df))
@@ -163,11 +164,13 @@ class ExpData(object):
 # Use this one for validation_mf() and maybe for cross3().
 #        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from Pm to hm = 0.2um
-        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
+# Use this for validation_cross2()
+#        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
         # Scale dP/dh from hm to hm = 0.2um
-        # df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
+#        df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
         # Scale c* from Berkovich to Conical
-        # df["dP/dh (N/m)"] *= 1.128 / 1.167
+# I think scaling() needs this.
+#        df["dP/dh (N/m)"] *= 1.128 / 1.167
         #
 
         print(df.describe())

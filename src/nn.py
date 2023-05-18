@@ -197,7 +197,9 @@ def validation_FEM(yname, angles, train_size):
         mape.append(dde.utils.apply(nn, (data,)))
 
     print(mape)
-    print(yname, "validation_FEM", train_size, np.mean(mape), np.std(mape))
+    print(yname, "validation_FEM ", train_size, " ", np.mean(mape), " ", np.std(mape))
+    with open('Output.txt', 'a') as f:
+        f.write("validation_FEM " + yname + " " + str(train_size) + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
 
 
 def mfnn(data):
@@ -532,10 +534,16 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-
+    validation_FEM("sigma_y", [50, 60, 70, 80], 10)
+    validation_FEM("sigma_y", [50, 60, 70, 80], 70)
+    '''
     validation_exp_cross2("Estar", 10, "B6090")
-    validation_exp_cross2("sigma_y", 20, "B6090")
-
+    validation_exp_cross2("sigma_y", 10, "B6090")
+    '''
+    '''
+    validation_scaling("Estar")
+    validation_model("sigma_y", 100)
+    '''
     '''
     validation_exp_cross3("sigma_y", 10, "Al6061")
     validation_exp_cross3("Estar", 10, "Al6061")
