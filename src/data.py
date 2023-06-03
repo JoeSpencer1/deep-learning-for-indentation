@@ -50,10 +50,10 @@ class FEMData(object):
         df["E* (GPa)"] = Etoestar(df["E (GPa)"])
         df["sy/E*"] = df["sy (GPa)"] / df["E* (GPa)"]
         df = df.loc[~((df["n"] > 0.3) & (df["sy/E*"] >= 0.03))]
+        #
         # df = df.loc[df["n"] <= 0.3]
         # Scale c* from Conical to Berkovich
-# Originally commented
-        df["dP/dh (N/m)"] *= 1.167 / 1.128
+        # df["dP/dh (N/m)"] *= 1.167 / 1.128
         # Add noise
         # sigma = 0.2
         # df["E* (GPa)"] *= 1 + sigma * np.random.randn(len(df))
@@ -161,15 +161,20 @@ class ExpData(object):
 
         #
         # Scale dP/dh from 3N to hm = 0.2um
-# Use this one for validation_mf() and maybe for cross3().
-#        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+
+# This is for Al alloys
+        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+
+        
         # Scale dP/dh from Pm to hm = 0.2um
-# Use this for validation_cross2()
-#        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
-        # Scale dP/dh from hm to hm = 0.2um
+        # df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / df["Pm (N)"]) ** 0.5 * 10 ** (-1.5)
+        # Scale dP/dh from hm to hm = 0.2um 
+
+# This is for Ti alloys
 #        df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
+
+
         # Scale c* from Berkovich to Conical
-# I think scaling() needs this.
 #        df["dP/dh (N/m)"] *= 1.128 / 1.167
         #
 

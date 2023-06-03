@@ -156,9 +156,9 @@ def test_inverse():
     hm = 0.2e-6
 
     # Estar
-    d = FEMData("Estar", [70])
+#    d = FEMData("Estar", [70])
     # d = BerkovichData("Estar")
-    # d = ExpData("B3067.csv", "Estar")
+    d = ExpData("../Data/Al6061.csv", "Estar")
     y_pred = np.array(
         [inverse_model(x[0] * 1e9, x[2], x[1], nu, hm)[1] / 1e9 for x in d.X]
     )[:, None]
@@ -167,9 +167,9 @@ def test_inverse():
     np.savetxt("E.dat", np.hstack((d.y, y_pred)))
 
     # sigma_y
-    d = FEMData("sigma_y", [70])
+#    d = FEMData("sigma_y", [70])
     # d = BerkovichData("sigma_y")
-    # d = ExpData("B3067.csv", "sigma_y")
+    d = ExpData("../Data/Al6061.csv", "sigma_y")
     y_pred = np.array(
         [inverse_model(x[0] * 1e9, x[2], x[1], nu, hm)[3] / 1e9 for x in d.X]
     )[:, None]
@@ -195,7 +195,8 @@ def test_inverse_dual():
     hm = 0.2e-6
 
     # Estar
-    d = FEMData("Estar", [70, 60])
+#    d = FEMData("Estar", [70, 60])
+    d = ExpData("../data/Al6061.csv", "Estar")
     y_pred = np.array(
         [
             inverse_model_dual(x[0] * 1e9, x[-1] * 1e9, 60, x[2], x[1], nu, hm)[1] / 1e9
@@ -206,7 +207,8 @@ def test_inverse_dual():
     print("E* MAPE:", mape)
 
     # sigma_y
-    d = FEMData("sigma_y", [70, 60])
+#    d = FEMData("sigma_y", [70, 60])
+    d = ExpData("../data/Al6061.csv", "sigma_y")
     y_pred = np.array(
         [
             inverse_model_dual(x[0] * 1e9, x[-1] * 1e9, 60, x[2], x[1], nu, hm)[3] / 1e9
@@ -228,7 +230,7 @@ def gen_forward():
         for _ in range(10000):
             E = random.uniform(10, 210)
             n = random.uniform(0, 0.5)
-            # sigma_y = random.uniform(0.03, 5.3)
+#            sigma_y = random.uniform(0.03, 5.3)
             sigma_y = random.uniform(0.0014, 0.04) * E
             if sigma_y < 0.03 or sigma_y > 5.3:
                 continue
@@ -261,8 +263,8 @@ def gen_inverse():
 def main():
     # print(inverse_model(27.4e9, 0.902, 4768e3 * 0.2 * (27.4 / 3)**0.5 * 10**(-1.5), 0.3, 0.2e-6, nu_i=0.07, E_i=1100e9))
     # test_inverse()
-    # test_inverse_dual()
-    gen_forward()
+    test_inverse_dual()
+    # gen_forward()
     # gen_inverse()
 
 
