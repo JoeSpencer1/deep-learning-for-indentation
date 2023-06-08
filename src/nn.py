@@ -402,6 +402,14 @@ def validation_exp_cross2(yname, train_size, data1, data2):
     '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
+    if data1 == "Ti33_750a":
+        dataexp1 = ExpData("../data/Ti33_750a.csv", yname)
+    if data1 == "Ti33_500a":
+        dataexp1 = ExpData("../data/Ti33_500a.csv", yname)
+    if data1 == "Ti33_250a":
+        dataexp1 = ExpData("../data/Ti33_250a.csv", yname)
+    if data1 == "Ti33_25a":
+        dataexp1 = ExpData("../data/Ti33_25a.csv", yname)
     if data1 == "B3067":
         dataexp1 = ExpData("../data/B3067.csv", yname)
     if data1 == "B3067_60":
@@ -415,6 +423,14 @@ def validation_exp_cross2(yname, train_size, data1, data2):
     if data1 == "Al7075":
         dataexp1 = ExpData("../data/Al7075.csv", yname)
 
+    if data2 == "Ti33_750a":
+        dataexp2 = ExpData("../data/Ti33_750a.csv", yname)
+    if data2 == "Ti33_500a":
+        dataexp2 = ExpData("../data/Ti33_500a.csv", yname)
+    if data2 == "Ti33_250a":
+        dataexp2 = ExpData("../data/Ti33_250a.csv", yname)
+    if data2 == "Ti33_25a":
+        dataexp2 = ExpData("../data/Ti33_25a.csv", yname)
     if data2 == "B3067":
         dataexp2 = ExpData("../data/B3067.csv", yname)
     if data2 == "B3067_60":
@@ -583,9 +599,16 @@ def main():
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
+    '''
+    validation_exp_cross2("Estar", 20, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 20, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 20, "Ti33_250a", "Ti33_250a")
+    '''
 
-    validation_exp_cross2("Estar", 3, "Al6061", "Al6061")
-    validation_exp_cross2("Estar", 3, "Al7075", "Al7075")
+    validation_exp_cross2("Estar", 2, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 5, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 10, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 20, "Ti33_25a", "Ti33_25a")
 
     return
     #''

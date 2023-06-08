@@ -160,10 +160,17 @@ class ExpData(object):
         df = pd.read_csv(self.filename)
 
         #
+        # Scale nm to um for Ti33 files
+        df["hm (um)"] = df["hmax(nm)"] / 1000
+        df["C (GPA)"] = df["H(GPa)"] * df["hm (um)"] ** 2
+        df["H(GPa)"]
+        df["hc(nm)"]
+        df["hf(nm)"]
+        self.X = df[["hmax(nm)", "H(GPa)", "hc(nm)"]].values
         # Scale dP/dh from 3N to hm = 0.2um
 
 # This is for Al alloys
-        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+        #df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
 
         
         # Scale dP/dh from Pm to hm = 0.2um
@@ -180,7 +187,8 @@ class ExpData(object):
 
         print(df.describe())
 
-        self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values
+# I just commented this line for my own work.
+#        self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values
         if self.yname == "Estar":
             self.y = df["E* (GPa)"].values[:, None]
         elif self.yname == "sigma_y":
