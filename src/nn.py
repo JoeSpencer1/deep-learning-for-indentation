@@ -310,6 +310,14 @@ def validation_exp(yname, exp):
     '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
+    if exp == "Ti33_750a":
+        dataexp = ExpData("../data/Ti33_750a.csv", yname)
+    if exp == "Ti33_500a":
+        dataexp = ExpData("../data/Ti33_500a.csv", yname)
+    if exp == "Ti33_250a":
+        dataexp = ExpData("../data/Ti33_250a.csv", yname)
+    if exp == "Ti33_25a":
+        dataexp = ExpData("../data/Ti33_25a.csv", yname)
     if exp == "B3067":
         dataexp = ExpData("../data/B3067.csv", yname)
     if exp == "B3067_60":
@@ -604,11 +612,18 @@ def main():
     validation_exp_cross2("Estar", 20, "Ti33_500a", "Ti33_500a")
     validation_exp_cross2("Estar", 20, "Ti33_250a", "Ti33_250a")
     '''
-
+    
     validation_exp_cross2("Estar", 2, "Ti33_25a", "Ti33_25a")
+    '''
     validation_exp_cross2("Estar", 5, "Ti33_25a", "Ti33_25a")
     validation_exp_cross2("Estar", 10, "Ti33_25a", "Ti33_25a")
     validation_exp_cross2("Estar", 20, "Ti33_25a", "Ti33_25a")
+    '''
+    
+    validation_exp("Estar", "Ti33_25a")
+    validation_exp("Estar", "Ti33_250a")
+    validation_exp("Estar", "Ti33_500a")
+    validation_exp("Estar", "Ti33_750a")
 
     return
     #''
