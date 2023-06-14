@@ -58,7 +58,7 @@ for i in range(n):
     #print(res.loc[0, 'hmax(nm)'])
     C[i] = 1000 * res.loc[i, 'Pmax(uN)'] / res.loc[i, 'hmax(nm)'] ** 2
     print('C = ', C[i])
-    
+
     res['C (GPa)'] = C
     res['dP/dh'] = dPdh
     res['Wp/Wt'] = WpWt

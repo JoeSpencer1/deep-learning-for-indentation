@@ -612,18 +612,46 @@ def main():
     validation_exp_cross2("Estar", 20, "Ti33_500a", "Ti33_500a")
     validation_exp_cross2("Estar", 20, "Ti33_250a", "Ti33_250a")
     '''
-    
+
+    validation_exp("Estar", "Ti33_25a")    
     validation_exp_cross2("Estar", 2, "Ti33_25a", "Ti33_25a")
-    '''
+    validation_exp_cross2("Estar", 3, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 4, "Ti33_25a", "Ti33_25a")
     validation_exp_cross2("Estar", 5, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 6, "Ti33_25a", "Ti33_25a")
+    validation_exp_cross2("Estar", 8, "Ti33_25a", "Ti33_25a")
     validation_exp_cross2("Estar", 10, "Ti33_25a", "Ti33_25a")
     validation_exp_cross2("Estar", 20, "Ti33_25a", "Ti33_25a")
-    '''
     
-    validation_exp("Estar", "Ti33_25a")
     validation_exp("Estar", "Ti33_250a")
+    validation_exp_cross2("Estar", 2, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 3, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 4, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 5, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 6, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 8, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 10, "Ti33_250a", "Ti33_250a")
+    validation_exp_cross2("Estar", 20, "Ti33_250a", "Ti33_250a")
+
     validation_exp("Estar", "Ti33_500a")
+    validation_exp_cross2("Estar", 2, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 3, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 4, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 5, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 6, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 8, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 10, "Ti33_500a", "Ti33_500a")
+    validation_exp_cross2("Estar", 20, "Ti33_500a", "Ti33_500a")
+
     validation_exp("Estar", "Ti33_750a")
+    validation_exp_cross2("Estar", 2, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 3, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 4, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 5, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 6, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 8, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 10, "Ti33_750a", "Ti33_750a")
+    validation_exp_cross2("Estar", 20, "Ti33_750a", "Ti33_750a")
 
     return
     #''

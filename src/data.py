@@ -161,12 +161,14 @@ class ExpData(object):
 
         #
         # Scale nm to um for Ti33 files
+        '''
         df["hm (um)"] = df["hmax(nm)"] / 1000
         df["C (GPA)"] = df["H(GPa)"] * df["hm (um)"] ** 2
         df["H(GPa)"]
         df["hc(nm)"]
         df["hf(nm)"]
         self.X = df[["hmax(nm)", "H(GPa)", "hc(nm)"]].values
+        '''
         # Scale dP/dh from 3N to hm = 0.2um
 
 # This is for Al alloys
@@ -179,7 +181,8 @@ class ExpData(object):
 
 # This is for Ti alloys
 #        df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
-
+# This is for the Yanbo's Ti alloys
+        df["dP/dh (N/m)"] *= 0.2 * 1000 / df["hmax(nm)"]
 
         # Scale c* from Berkovich to Conical
 #        df["dP/dh (N/m)"] *= 1.128 / 1.167
@@ -188,7 +191,7 @@ class ExpData(object):
         print(df.describe())
 
 # I just commented this line for my own work.
-#        self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values
+        self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values
         if self.yname == "Estar":
             self.y = df["E* (GPa)"].values[:, None]
         elif self.yname == "sigma_y":
