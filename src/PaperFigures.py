@@ -523,7 +523,7 @@ plt.suptitle("$E^{\star}$: Cross2 method comparison for Ti33", y=0.05, fontsize=
 plt.savefig("/Users/Joe/Desktop/figure19.png")
 plt.show()
 '''
-
+'''
 n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
 # 750˚, cross2
 Ti750E = [22.74219275, 20.62261021, 20.63547436, 19.4810463, 18.91002247, 18.19225275, 17.66865073, 17.40025689, 16.67137397, 14.09023671]
@@ -556,3 +556,66 @@ plt.subplots_adjust(bottom=0.18)
 plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33", y=0.05, fontsize=16)
 plt.savefig("/Users/Joe/Desktop/figure20.png")
 plt.show()
+'''
+'''
+n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
+# 750˚, cross2 (self)
+Ti750sE = [22.74219275, 20.62261021, 20.63547436, 19.4810463, 18.91002247, 18.19225275, 17.66865073, 17.40025689, 16.67137397, 14.09023671]
+εTi750sE = [1.09400474, 2.42701076, 1.67360611, 1.40042242, 1.14474779, 1.18580074, 1.15735988, 1.24283096, 0.9555188, 0.69974678]
+# 750˚, cross2 (1 Estar, self)
+Ti750sE2 = [44.56400654, 43.67288301, 43.20008668, 41.82067908, 40.78293067, 40.2062695, 40.06553969, 39.03624527, 37.38997642, 33.02307318]
+εTi750sE2 = [0.34273797, 0.53787038, 0.79239417, 2.48630407, 2.48558065, 2.55202247, 2.26708601, 2.60285348, 2.71574786, 2.55183609]
+# 750˚, cross2 (250˚, uncleaned)
+Ti750pE = [22.91273365, 22.47692978, 23.06164819, 22.51761829, 23.88522265, 24.65573764, 24.24359862, 24.35779437, 24.96326324, 24.74265974]
+εTi750pE = [1.16481071, 0.85124713, 1.79050013, 1.36539445, 1.34524191, 2.14761082, 0.99580356, 1.32409663, 0.84506931, 0.98756287]
+# 750˚, cross2 (250˚)
+Ti750pE2 = [22.7432109, 20.30678536, 20.38437269, 20.2808522, 19.92654862, 20.71763083, 20.6963388, 20.39988734, 20.55628761, 20.27633542]
+εTi750pE2 = [1.58256565, 0.4674164, 0.95313367, 0.52655137, 0.45183505, 0.72136933, 0.40416965, 0.6261124, 0.64190076, 0.78686324]
+
+fig, ax = plt.subplots()
+ax.errorbar(n, Ti750sE, yerr = εTi750sE, label = "Ti33: 750˚C, different $\sigma_{y}$")
+ax.errorbar(n, Ti750sE2, yerr = εTi750sE2, label = "Ti33: 750˚C, single $\sigma_{y}$")
+ax.errorbar(n, Ti750pE, yerr = εTi750pE, label = "Ti33: 750˚C, trained from 25˚C")
+ax.errorbar(n, Ti750pE2, yerr = εTi750pE2, label = "Ti33: 750˚C, trained from 25˚C, $h_{max} \\leq 400 nm$")
+ax.set_yscale('log')
+ax.set_ylim([4, 50])
+ax.set_xticks([0, 5, 10, 15, 20])
+ax.set_yticks([4, 10, 20, 50])
+ax.set_yticklabels([4, 10, 20, 50])
+ax.legend()
+ax.set_ylabel("MAPE (%)")
+ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
+plt.subplots_adjust(bottom=0.18)
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 750˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure21.png")
+plt.show()
+'''
+'''
+n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
+# 250˚, cross2 (self)
+Ti250E = [35.24559953, 13.55870661, 11.8248246, 10.923051, 9.54057722, 9.21058842, 8.54009045, 8.15317396, 7.56763099, 5.78381901]
+εTi250E = [3.1661163, 4.73711992, 2.33398521, 1.85770404, 0.8655968, 0.71457763, 0.30699462, 0.62376367, 0.43500931, 0.28294596]
+# 250˚, cross2 (25˚)
+Ti25E = [34.33835857, 34.93023696, 34.00767512, 34.63857446, 34.13918443, 34.95016874, 36.04625686, 36.48948703, 38.87897481, 36.99936865]
+εTi25E = [3.07228799, 3.09623858, 3.38829581, 2.59930911, 1.92108184, 2.68523295, 2.24788623, 2.90450047, 1.91752321, 3.00116909]
+# 250˚, cross2 (500˚)
+Ti500E = [33.38612255, 35.74112078, 36.4283278, 36.20695545, 38.7743991, 37.25338799, 39.02619327, 36.79238692, 35.63924399, 35.97073564]
+εTi500E = [2.34985368, 4.21925637, 3.93393791, 4.9898504, 4.21978169, 5.33950463, 4.53798639, 5.63944341, 6.16649966, 3.55755834]
+
+fig, ax = plt.subplots()
+ax.errorbar(n, Ti250E, yerr = εTi250E, label = "Ti33: 250˚C, trained by 250˚C")
+ax.errorbar(n, Ti25E, yerr = εTi25E, label = "Ti33: 250˚C, trained by 25˚C")
+ax.errorbar(n, Ti500E, yerr = εTi500E, label = "Ti33: 250˚C, trained by 500˚C")
+ax.set_yscale('log')
+ax.set_ylim([4, 50])
+ax.set_xticks([0, 5, 10, 15, 20])
+ax.set_yticks([4, 10, 20, 50])
+ax.set_yticklabels([4, 10, 20, 50])
+ax.legend()
+ax.set_ylabel("MAPE (%)")
+ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
+plt.subplots_adjust(bottom=0.18)
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure22.png")
+plt.show()
+'''

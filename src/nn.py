@@ -11,6 +11,8 @@ from sklearn.model_selection import KFold, LeaveOneOut, RepeatedKFold, ShuffleSp
 import deepxde as dde
 from data import BerkovichData, ExpData, FEMData, ModelData
 
+import multiprocessing
+import functools as partial
 '''
 General summary:
 Function                        Purpose
@@ -310,34 +312,7 @@ def validation_exp(yname, exp):
     '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
-    if exp == "Ti33_750a":
-        dataexp = ExpData("../data/Ti33_750a.csv", yname)
-    if exp == "Ti33_500a":
-        dataexp = ExpData("../data/Ti33_500a.csv", yname)
-    if exp == "Ti33_250a":
-        dataexp = ExpData("../data/Ti33_250a.csv", yname)
-    if exp == "Ti33_25a":
-        dataexp = ExpData("../data/Ti33_25a.csv", yname)
-    if exp == "B3067":
-        dataexp = ExpData("../data/B3067.csv", yname)
-    if exp == "B3067_60":
-        dataexp = ExpData("../data/B3067_60.csv", yname)
-    if exp == "B3090":
-        dataexp = ExpData("../data/B3090.csv", yname)
-    if exp == "B3090_60":
-        dataexp = ExpData("../data/B3090_60.csv", yname)
-    if exp == "B6067":
-        dataexp = ExpData("../data/B6067.csv", yname)
-    if exp == "B6090":
-        dataexp = ExpData("../data/B6090.csv", yname)
-    if exp == "S3067":
-        dataexp = ExpData("../data/S3067.csv", yname)
-    if exp == "S6067":
-        dataexp = ExpData("../data/S6067.csv", yname)
-    if exp == "Al6061":
-        dataexp = ExpData("../data/Al6061.csv", yname)
-    if exp == "Al7075":
-        dataexp = ExpData("../data/Al7075.csv", yname)
+    dataexp = ExpData("../data/" + exp + ".csv", yname)
 
     ape = []
     y = []
@@ -410,55 +385,8 @@ def validation_exp_cross2(yname, train_size, data1, data2):
     '''
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
-    if data1 == "Ti33_750a":
-        dataexp1 = ExpData("../data/Ti33_750a.csv", yname)
-    if data1 == "Ti33_500a":
-        dataexp1 = ExpData("../data/Ti33_500a.csv", yname)
-    if data1 == "Ti33_250a":
-        dataexp1 = ExpData("../data/Ti33_250a.csv", yname)
-    if data1 == "Ti33_25a":
-        dataexp1 = ExpData("../data/Ti33_25a.csv", yname)
-    if data1 == "B3067":
-        dataexp1 = ExpData("../data/B3067.csv", yname)
-    if data1 == "B3067_60":
-        dataexp1 = ExpData("../data/B3067_60.csv", yname)
-    if data1 == "B3090":
-        dataexp1 = ExpData("../data/B3090.csv", yname)
-    if data1 == "B3090_60":
-        dataexp1 = ExpData("../data/B3090_60.csv", yname)
-    if data1 == "Al6061":
-        dataexp1 = ExpData("../data/Al6061.csv", yname)
-    if data1 == "Al7075":
-        dataexp1 = ExpData("../data/Al7075.csv", yname)
-
-    if data2 == "Ti33_750a":
-        dataexp2 = ExpData("../data/Ti33_750a.csv", yname)
-    if data2 == "Ti33_500a":
-        dataexp2 = ExpData("../data/Ti33_500a.csv", yname)
-    if data2 == "Ti33_250a":
-        dataexp2 = ExpData("../data/Ti33_250a.csv", yname)
-    if data2 == "Ti33_25a":
-        dataexp2 = ExpData("../data/Ti33_25a.csv", yname)
-    if data2 == "B3067":
-        dataexp2 = ExpData("../data/B3067.csv", yname)
-    if data2 == "B3067_60":
-        dataexp2 = ExpData("../data/B3067_60.csv", yname)
-    if data2 == "B3090":
-        dataexp2 = ExpData("../data/B3090.csv", yname)
-    if data2 == "B3090_60":
-        dataexp2 = ExpData("../data/B3090_60.csv", yname)
-    if data2 == "B6067":
-        dataexp2 = ExpData("../data/B6067.csv", yname)
-    if data2 == "B6090":
-        dataexp2 = ExpData("../data/B6090.csv", yname)
-    if data2 == "S3067":
-        dataexp2 = ExpData("../data/S3067.csv", yname)
-    if data2 == "S6067":
-        dataexp2 = ExpData("../data/S6067.csv", yname)
-    if data2 == "Al6061":
-        dataexp2 = ExpData("../data/Al6061.csv", yname)
-    if data2 == "Al7075":
-        dataexp2 = ExpData("../data/Al7075.csv", yname)
+    dataexp1 = ExpData("../data/" + data1 + ".csv", yname)
+    dataexp2 = ExpData("../data/" + data2 + ".csv", yname)
 
     ape = []
     y = []
@@ -538,18 +466,7 @@ def validation_exp_cross3(yname, numitrs, expdata):
 def validation_exp_cross_transfer(yname, train_size, dataset):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
-    if dataset == "B3090":
-        dataexp = ExpData("../data/B3090.csv", yname)
-    if dataset == "B3067":
-        dataexp = ExpData("../data/B3067.csv", yname)
-    if dataset == "B6090":
-        dataexp = ExpData("../data/B6090.csv", yname)
-    if dataset == "S3067":
-        dataexp = ExpData("../data/S3067.csv", yname)
-    if dataset == "Al6061":
-        dataexp = ExpData("../data/Al6061.csv", yname)
-    if dataset == "Al7075":
-        dataexp = ExpData("../data/Al7075.csv", yname)
+    dataexp = ExpData("../data/" + dataset + ".csv", yname)
     
     #train_size = 5
 
@@ -570,11 +487,6 @@ def validation_exp_cross_transfer(yname, train_size, dataset):
 
     ape = []
     y = []
-
-    # cases = range(6)
-    # for train_index in itertools.combinations(cases, 3):
-    #     train_index = list(train_index)
-    #     test_index = list(set(cases) - set(train_index))
 
     kf = ShuffleSplit(
         n_splits=10, test_size=len(dataexp.X) - train_size, random_state=0
@@ -602,23 +514,125 @@ def validation_exp_cross_transfer(yname, train_size, dataset):
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
+
+'''
+validation_joe(yname, tsize_1, tsize_2, data_train1, data_train2, data_test)
+'''
+def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name):
+    
+    dataFEM = FEMData(yname, [70])
+    dataBerkovich = BerkovichData(yname)
+    data_train1 = ExpData('../data/' + train1_name + '.csv', yname)
+    data_train2 = ExpData('../data/' + train2_name + '.csv', yname)
+    data_test = ExpData('../data/' + test_name + '.csv', yname)
+
+    ape = []
+    y = []
+
+    kf = ShuffleSplit(n_splits=10, train_size=tsize_1, random_state=0)
+    
+    if tsize_1 > 0:
+        for train_index, _ in kf.split(data_train1.X):
+            print("\nIteration: {}".format(len(ape)))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataFEM.X,
+                X_hi_train=np.vstack((dataBerkovich.X, data_train1.X[train_index])),
+                y_lo_train=dataFEM.y,
+                y_hi_train=np.vstack((dataBerkovich.y, data_train1.y[train_index])),
+                X_hi_test=data_test.X,
+                y_hi_test=data_test.y,
+                standardize=True
+            )
+            res = dde.utils.apply(mfnn, (data,))
+    else:
+        for train_index in range(10):
+            print("\nIteration: {}".format(iter))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataFEM.X,
+                X_hi_train=dataBerkovich.X,
+                y_lo_train=dataFEM.y,
+                y_hi_train=dataBerkovich.y,
+                X_hi_test=data_test.X,
+                y_hi_test=data_test.y,
+                standardize=True
+            )
+            res = dde.utils.apply(mfnn, (data,))
+    ape.append(res[:2])
+ 
+    num = 5
+    y_res = [res[0]]
+    y_data = np.vstack((dataBerkovich.y, data_train1.y[train_index]))
+    X_data = np.vstack((dataBerkovich.X, data_train1.X[train_index]))
+    find_index = np.argmax(y_data > y_res)
+    X_res = X_data[find_index]
+    y_res = np.repeat([y_res], num, axis = 0)
+    X_res = np.repeat([X_res], num, axis = 0)
+    
+    if tsize_2 > 0:
+        for train_index, _ in kf.split(data_train1.X):
+            print("\nIteration: {}".format(len(ape)))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataBerkovich.X,
+                X_hi_train=np.vstack((X_res, data_train2.X[train_index])),
+                y_lo_train=dataBerkovich.y,
+                y_hi_train=np.vstack((y_res, data_train2.y[train_index])),
+                X_hi_test=data_test.X,
+                y_hi_test=data_test.y,
+                standardize=True
+            )
+            res = dde.utils.apply(mfnn, (data,))
+    else:
+        for train_index in range(10):
+            print("\nIteration: {}".format(iter))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataBerkovich.X,
+                X_hi_train=X_res,
+                y_lo_train=dataBerkovich.y,
+                y_hi_train=y_res,
+                X_hi_test=data_test.X,
+                y_hi_test=data_test.y,
+                standardize=True
+            )
+            res = dde.utils.apply(mfnn, (data,))
+
+    res = dde.utils.apply(mfnn, (data,))
+    print(res)
+    ape.append(res[:2])
+    y.append(res[2])
+    
+    print(yname, "validation_joe", tsize_1, ' ', tsize_2, np.mean(ape, axis=0), np.std(ape, axis=0))
+    with open('Output.txt', 'a') as f:
+        f.write('joe ' + train1_name + " " + train2_name + " " + test_name + yname + " " + str(tsize_1) + '-' + str(tsize_2) + 
+                str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+    print("Saved to ", yname, ".dat.")
+    np.savetxt(yname + ".dat", np.hstack(y).T)
+    
+
 def main():
     '''
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-
-    validation_exp("Estar", "Ti33_750a")
-    validation_exp_cross2("Estar", 1, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 2, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 3, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 4, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 5, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 6, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 8, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 10, "Ti33_750a", "Ti33_750a")
-    validation_exp_cross2("Estar", 20, "Ti33_750a", "Ti33_750a")
+    '''
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 0, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    '''
     
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
     
     return
     #''
