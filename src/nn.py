@@ -12,7 +12,6 @@ import deepxde as dde
 from data import BerkovichData, ExpData, FEMData, ModelData
 
 import multiprocessing
-import functools as partial
 '''
 General summary:
 Function                        Purpose
@@ -513,22 +512,21 @@ def validation_exp_cross_transfer(yname, train_size, dataset):
     print(np.mean(ape, axis=0), np.std(ape, axis=0))
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
-
-
 '''
 validation_joe(yname, tsize_1, tsize_2, data_train1, data_train2, data_test)
 '''
-def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name):
+def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name, parallel=False):
     
     dataFEM = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     data_train1 = ExpData('../data/' + train1_name + '.csv', yname)
     data_train2 = ExpData('../data/' + train2_name + '.csv', yname)
     data_test = ExpData('../data/' + test_name + '.csv', yname)
-
-    ape = []
-    y = []
-
+    
+    if parallel == False:
+        ape = []
+        y = []
+    
     kf = ShuffleSplit(n_splits=10, train_size=tsize_1, random_state=0)
     
     if tsize_1 > 0:
@@ -545,9 +543,11 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
                 standardize=True
             )
             res = dde.utils.apply(mfnn, (data,))
+            ape.append(res[:2])
+            y.append(res[2])
     else:
         for train_index in range(10):
-            print("\nIteration: {}".format(iter))
+            print("\nIteration: {}".format(train_index))
             print(train_index)
             data = dde.data.MfDataSet(
                 X_lo_train=dataFEM.X,
@@ -559,7 +559,8 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
                 standardize=True
             )
             res = dde.utils.apply(mfnn, (data,))
-    ape.append(res[:2])
+            ape.append(res[:2])
+            y.append(res[2])
  
     num = 5
     y_res = [res[0]]
@@ -569,9 +570,11 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
     X_res = X_data[find_index]
     y_res = np.repeat([y_res], num, axis = 0)
     X_res = np.repeat([X_res], num, axis = 0)
-    
+
+    kf = ShuffleSplit(n_splits=10, train_size=tsize_2, random_state=0)
+
     if tsize_2 > 0:
-        for train_index, _ in kf.split(data_train1.X):
+        for train_index, _ in kf.split(data_train2.X):
             print("\nIteration: {}".format(len(ape)))
             print(train_index)
             data = dde.data.MfDataSet(
@@ -584,9 +587,19 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
                 standardize=True
             )
             res = dde.utils.apply(mfnn, (data,))
+            ape.append(res[:2])
+            y.append(res[2])
     else:
+        y_res = np.vstack((y_res, y_res))
+        X_res = np.vstack((X_res, X_res))
+        print('dataBerkovich.X: ', dataBerkovich.X)
+        print('X_res: ', X_res)
+        print('dataBerkovich.y: ', dataBerkovich.y)
+        print('y_res: ', y_res)
+        print('data_test.X: ', data_test.X)
+        print('data_test.y: ', data_test.y)
         for train_index in range(10):
-            print("\nIteration: {}".format(iter))
+            print("\nIteration: {}".format(train_index))
             print(train_index)
             data = dde.data.MfDataSet(
                 X_lo_train=dataBerkovich.X,
@@ -598,11 +611,11 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
                 standardize=True
             )
             res = dde.utils.apply(mfnn, (data,))
+            ape.append(res[:2])
+            y.append(res[2])
 
     res = dde.utils.apply(mfnn, (data,))
     print(res)
-    ape.append(res[:2])
-    y.append(res[2])
     
     print(yname, "validation_joe", tsize_1, ' ', tsize_2, np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
@@ -610,18 +623,23 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
                 str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
-    
 
 def main():
     '''
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
-    '''
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 0, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    '''
+    
+    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
     
     validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
     validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
@@ -633,6 +651,50 @@ def main():
     validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
     validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
     validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
+    
+    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
+    
+    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
+    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
     
     return
     #''

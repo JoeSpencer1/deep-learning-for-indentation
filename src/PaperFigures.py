@@ -540,10 +540,10 @@ Ti500E2 = [13.83313093, 12.83991465, 12.01739788, 11.62618593, 10.31228624, 9.28
 
 
 fig, ax = plt.subplots()
-ax.errorbar(n, Ti750E, yerr = εTi750E, label = "Ti33: 750˚C, different $\sigma_{y}$")
-ax.errorbar(n, Ti750E2, yerr = εTi750E2, label = "Ti33: 750˚C, single $\sigma_{y}$")
-ax.errorbar(n, Ti500E, yerr = εTi500E, label = "Ti33: 500˚C, different $\sigma_{y}$")
-ax.errorbar(n, Ti500E2, yerr = εTi500E2, label = "Ti33: 500˚C, single $\sigma_{y}$")
+ax.errorbar(n, Ti750E, yerr = εTi750E, label = "Ti33: 750˚C, different $E^{\star}$")
+ax.errorbar(n, Ti750E2, yerr = εTi750E2, label = "Ti33: 750˚C, single $E^{\star}$")
+ax.errorbar(n, Ti500E, yerr = εTi500E, label = "Ti33: 500˚C, different $E^{\star}$")
+ax.errorbar(n, Ti500E2, yerr = εTi500E2, label = "Ti33: 500˚C, single $E^{\star}$")
 ax.set_yscale('log')
 ax.set_ylim([4, 50])
 ax.set_xticks([0, 5, 10, 15, 20])
@@ -573,8 +573,8 @@ Ti750pE2 = [22.7432109, 20.30678536, 20.38437269, 20.2808522, 19.92654862, 20.71
 εTi750pE2 = [1.58256565, 0.4674164, 0.95313367, 0.52655137, 0.45183505, 0.72136933, 0.40416965, 0.6261124, 0.64190076, 0.78686324]
 
 fig, ax = plt.subplots()
-ax.errorbar(n, Ti750sE, yerr = εTi750sE, label = "Ti33: 750˚C, different $\sigma_{y}$")
-ax.errorbar(n, Ti750sE2, yerr = εTi750sE2, label = "Ti33: 750˚C, single $\sigma_{y}$")
+ax.errorbar(n, Ti750sE, yerr = εTi750sE, label = "Ti33: 750˚C, different $E^{\star}$")
+ax.errorbar(n, Ti750sE2, yerr = εTi750sE2, label = "Ti33: 750˚C, single same $E^{\star}$")
 ax.errorbar(n, Ti750pE, yerr = εTi750pE, label = "Ti33: 750˚C, trained from 25˚C")
 ax.errorbar(n, Ti750pE2, yerr = εTi750pE2, label = "Ti33: 750˚C, trained from 25˚C, $h_{max} \\leq 400 nm$")
 ax.set_yscale('log')
@@ -619,3 +619,52 @@ plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C"
 plt.savefig("/Users/Joe/Desktop/figure22.png")
 plt.show()
 '''
+'''
+n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
+# 250˚, edited
+Ti250Ee = [32.23345345, 32.83613913, 31.95558785, 34.926363, 34.34764688, 33.56840004, 35.65507285, 34.56202343, 35.02562089, 36.9571808]
+εTi250Ee = [2.3581232, 2.90034917, 2.58022542, 2.82644808, 2.74713307, 2.41362589, 3.41212201, 2.91091963, 2.14901452, 2.00551627]
+# 250˚, unedited
+Ti250Eu = [35.24559953, 13.55870661, 11.8248246, 10.923051, 9.54057722, 9.21058842, 8.54009045, 8.15317396, 7.56763099, 5.78381901]
+εTi250Eu = [3.1661163, 4.73711992, 2.33398521, 1.85770404, 0.8655968, 0.71457763, 0.30699462, 0.62376367, 0.43500931, 0.28294596]
+
+fig, ax = plt.subplots()
+ax.errorbar(n, Ti250Ee, yerr = εTi250Ee, label = "Ti33: 250˚C, large changes in depth excluded")
+ax.errorbar(n, Ti250Eu, yerr = εTi250Eu, label = "Ti33: 250˚C, trained by all 250˚C data")
+ax.set_yscale('log')
+ax.set_ylim([4, 50])
+ax.set_xticks([0, 5, 10, 15, 20])
+ax.set_yticks([4, 10, 20, 50])
+ax.set_yticklabels([4, 10, 20, 50])
+ax.legend()
+ax.set_ylabel("MAPE (%)")
+ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
+plt.subplots_adjust(bottom=0.18)
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure23.png")
+plt.show()
+'''
+
+n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
+# 250˚, edited
+Ti250Ee = []
+εTi250Ee = []
+# 250˚, unedited
+Ti250Eu = []
+εTi250Eu = []
+
+fig, ax = plt.subplots()
+ax.errorbar(n, Ti250Ee, yerr = εTi250Ee, label = "Ti33: 250˚C, large changes in depth excluded")
+ax.errorbar(n, Ti250Eu, yerr = εTi250Eu, label = "Ti33: 250˚C, trained by all 250˚C data")
+ax.set_yscale('log')
+ax.set_ylim([4, 50])
+ax.set_xticks([0, 5, 10, 15, 20])
+ax.set_yticks([4, 10, 20, 50])
+ax.set_yticklabels([4, 10, 20, 50])
+ax.legend()
+ax.set_ylabel("MAPE (%)")
+ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
+plt.subplots_adjust(bottom=0.18)
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure23.png")
+plt.show()
