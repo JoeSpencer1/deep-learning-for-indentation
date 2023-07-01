@@ -644,7 +644,7 @@ plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C"
 plt.savefig("/Users/Joe/Desktop/figure23.png")
 plt.show()
 '''
-
+'''
 n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
 # 750˚, 25˚ data there, 750˚ data added
 Ti750E1 = [17.10079961, 16.99942028, 17.44123487, 17.42660323, 17.33004997, 17.67587651, 18.22724009, 17.44525551, 18.11950215, 18.26867337]
@@ -676,8 +676,8 @@ plt.subplots_adjust(bottom=0.18)
 plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 750˚C", y=0.05, fontsize=16)
 plt.savefig("/Users/Joe/Desktop/figure24.png")
 plt.show()
-
-
+'''
+'''
 n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
 n2 = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 # 500, 25˚ data there, 500˚ data added
@@ -718,3 +718,4 @@ plt.subplots_adjust(bottom=0.18)
 plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 750˚C", y=0.05, fontsize=16)
 plt.savefig("/Users/Joe/Desktop/figure25.png")
 plt.show()
+'''
