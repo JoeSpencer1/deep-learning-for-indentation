@@ -515,7 +515,7 @@ def validation_exp_cross_transfer(yname, train_size, dataset):
 '''
 validation_joe(yname, tsize_1, tsize_2, data_train1, data_train2, data_test)
 '''
-def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name, parallel=False):
+def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name):
     
     dataFEM = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
@@ -523,9 +523,8 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name,
     data_train2 = ExpData('../data/' + train2_name + '.csv', yname)
     data_test = ExpData('../data/' + test_name + '.csv', yname)
     
-    if parallel == False:
-        ape = []
-        y = []
+    ape = []
+    y = []
     
     kf = ShuffleSplit(n_splits=10, train_size=tsize_1, random_state=0)
     
@@ -624,78 +623,57 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name,
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
-def main():
+def main(argument=None):
     '''
     The main function selects which approach will be used and then performs it. \n
     Any code aboce the multi-line comment is made by me.
     '''
+    if argument != None:
+        exec(argument)
+    '''
+    validation_exp('Estar', 'Ti33_500a')
+    validation_exp_cross2('Estar', 1, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 2, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 3, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 4, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 5, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 6, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 8, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 10, 'Ti33_25a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 20, 'Ti33_25a', 'Ti33_500a')
     
-    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_750a', 'Ti33_750a')
-    
-    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_250a', 'Ti33_250a')
-    
-    validation_joe('Estar', 0, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 1, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 2, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 3, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 4, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 5, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 6, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 8, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 10, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    validation_joe('Estar', 20, 20, 'Ti33_25a', 'Ti33_500a', 'Ti33_500a')
-    
+    validation_exp('Estar', 'Ti33_500a')
+    validation_exp_cross2('Estar', 1, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 2, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 3, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 4, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 5, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 6, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 8, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 10, 'Ti33_500a', 'Ti33_500a')
+    validation_exp_cross2('Estar', 20, 'Ti33_500a', 'Ti33_500a')
+    '''
+    '''
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
+
+    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
+    '''
     return
     #''
     validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape)

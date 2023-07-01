@@ -646,16 +646,24 @@ plt.show()
 '''
 
 n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
-# 250˚, edited
-Ti250Ee = []
-εTi250Ee = []
-# 250˚, unedited
-Ti250Eu = []
-εTi250Eu = []
+# 750˚, 25˚ data there, 750˚ data added
+Ti750E1 = [17.10079961, 16.99942028, 17.44123487, 17.42660323, 17.33004997, 17.67587651, 18.22724009, 17.44525551, 18.11950215, 18.26867337]
+εTi750E1 = [5.97674614, 5.63917552, 5.64814358, 6.29537589, 6.26110722, 6.02255403, 6.73762308, 6.73125919, 6.82417437, 7.08645536]
+# 750˚, 25˚ data added
+Ti750E2 = [23.67731907, 23.61807471, 22.2258443, 22.19685189, 21.64394846, 21.27171676, 21.24659084, 19.87388692, 19.78350748, 18.27975746]
+εTi750E2 = [1.81490396, 2.99965854, 3.43967608, 3.42143266, 3.81803575, 4.12182853, 4.32363957, 4.67874097, 5.44705205, 7.03637642]
+# 750˚, cross2, 25˚ training data
+Ti750E3 = [22.76704549, 23.58014485, 23.04126101, 23.0897574, 23.39195654, 23.60942335, 23.95367643, 24.51037973, 24.64922514, 24.40430102]
+εTi750E3 = [1.69016798, 1.39470559, 0.96538455, 1.11105919, 1.27402408, 1.54786652, 1.21917963, 0.90542558, 1.11773548, 0.82672601]
+# 750˚, cross2, 750˚ training data
+Ti750E4 = [23.37565133, 20.93590694, 19.54231555, 19.22836006, 18.63762583, 18.17080232, 17.84399624, 17.04697986, 16.6985118, 14.14832345]
+εTi750E4 = [1.33550844, 2.47647777, 1.11288338, 1.67852863, 1.02832587, 1.18450794, 1.24313337, 0.94244277, 0.62762372, 0.53368235]
 
 fig, ax = plt.subplots()
-ax.errorbar(n, Ti250Ee, yerr = εTi250Ee, label = "Ti33: 250˚C, large changes in depth excluded")
-ax.errorbar(n, Ti250Eu, yerr = εTi250Eu, label = "Ti33: 250˚C, trained by all 250˚C data")
+ax.errorbar(n, Ti750E1, yerr = εTi750E1, label = "Ti33: 750˚C, trained previously by 20 25˚C points.")
+ax.errorbar(n, Ti750E2, yerr = εTi750E2, label = "Ti33: 750˚C, trained after by 20 750˚C points.")
+ax.errorbar(n, Ti750E3, yerr = εTi750E3, label = "Ti33: 750˚C, trained only by 25˚C points.")
+ax.errorbar(n, Ti750E4, yerr = εTi750E4, label = "Ti33: 750˚C, trained only by 750˚C points.")
 ax.set_yscale('log')
 ax.set_ylim([4, 50])
 ax.set_xticks([0, 5, 10, 15, 20])
@@ -665,6 +673,48 @@ ax.legend()
 ax.set_ylabel("MAPE (%)")
 ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
 plt.subplots_adjust(bottom=0.18)
-plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 250˚C", y=0.05, fontsize=16)
-plt.savefig("/Users/Joe/Desktop/figure23.png")
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 750˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure24.png")
+plt.show()
+
+
+n = [0, 1, 2, 3, 4, 5, 6, 8, 10, 20]
+n2 = [0, 1, 2, 3, 4, 5, 6, 8, 10]
+# 500, 25˚ data there, 500˚ data added
+Ti500E1 = [9.06844964, 8.95897659, 8.74157255, 8.88099513, 8.96389273, 8.86759218, 8.84647914, 8.62334759, 8.65142586, 8.79556547]
+εTi500E1 = [2.38190357, 2.37549759, 2.56228789, 2.27952376, 2.27980669, 2.24994576, 2.23420322, 2.43671908, 2.47324881, 2.18491273]
+# 500, 25˚ data added
+Ti500E2 = [10.95020934, 10.95486886, 9.71612238, 9.5857391, 9.56613242, 9.16158257, 9.39940477, 9.2141574, 9.00350518, 8.57545337]
+εTi500E2 = [0.97045022, 0.92872509, 1.38839237, 1.63530712, 1.46739893, 1.76158313, 1.52044744,1.70269884, 1.95306613, 2.30776601]
+# 500, points with large jumps in depth removed
+Ti500E3 = [12.97952732, 11.33137112, 11.0732476, 9.97881354, 9.96821186, 9.74260725, 9.41073104, 8.86642822, 8.67789414]
+εTi500E3 = [1.07508901, 1.79608641, 2.46895544, 2.49647574, 2.30221106, 2.53031004, 2.78672357, 3.1900416, 3.31327466]
+# 500, points with depth above 400nm removed
+Ti500E4 = [12.57313217, 9.66946921, 9.99841411, 9.42267512, 9.61091743, 9.33324485, 9.14848195, 9.10865716, 8.90918735]
+εTi500E4 = [2.28695071, 1.29059535, 1.08894692, 1.60213386, 1.51607007, 1.66444883, 1.70230611, 1.7526536, 2.13574849]
+# 500, cross2, 25˚ training data
+Ti500E5 = [11.68147749, 11.02821955, 11.09554448, 10.90373067, 11.23115768, 11.06519976, 11.08157888, 11.10420958, 10.97754063, 10.91304784]
+εTi500E5 = [0.55719927, 0.50194689, 0.60334575, 0.28988114, 0.16126524, 0.20246318, 0.20679666, 0.32117734, 0.30247793, 0.27745809]
+# 500, cross2, 500˚ training data
+Ti500E6 = [11.69849773, 10.33584506, 9.15315264, 8.32445867, 7.69065487, 7.63522217, 7.46217101, 6.85775915, 6.71061151, 5.96008199]
+εTi500E6 = [0.7359779, 1.06572191, 1.00514533, 1.6434037, 0.66580158, 0.48297202, 0.52732167, 0.35164309, 0.30710129, 0.18202609]
+
+fig, ax = plt.subplots()
+ax.errorbar(n, Ti500E2, yerr = εTi500E2, label = "Ti33: 500˚C, trained previously by 20 25˚C points.")
+ax.errorbar(n, Ti500E1, yerr = εTi500E1, label = "Ti33: 500˚C, trained after by 20 250˚C points.")
+ax.errorbar(n2, Ti500E3, yerr = εTi500E3, label = "Ti33: 500˚C, training points with large jumps removed.")
+ax.errorbar(n2, Ti500E4, yerr = εTi500E4, label = "Ti33: 500˚C, training points above 400$nm$ removed.")
+ax.errorbar(n, Ti500E5, yerr = εTi500E5, label = "Ti33: 500˚C, trained only by 25˚C points.")
+ax.errorbar(n, Ti500E6, yerr = εTi500E6, label = "Ti33: 500˚C, trained only by 500˚C points.")
+ax.set_yscale('log')
+ax.set_ylim([4, 50])
+ax.set_xticks([0, 5, 10, 15, 20])
+ax.set_yticks([4, 10, 20, 50])
+ax.set_yticklabels([4, 10, 20, 50])
+ax.legend()
+ax.set_ylabel("MAPE (%)")
+ax.set_xlabel("Randomly selected training data set size ($n_{exp}$)")
+plt.subplots_adjust(bottom=0.18)
+plt.suptitle("$E^{\star}$: Average and distribution comparison for Ti33, 750˚C", y=0.05, fontsize=16)
+plt.savefig("/Users/Joe/Desktop/figure25.png")
 plt.show()
