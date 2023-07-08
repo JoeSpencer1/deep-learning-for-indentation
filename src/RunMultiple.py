@@ -8,8 +8,36 @@ def run_main(arg):
 if __name__ == '__main__':
 
     arguments = np.array([
-    'validation_exp(\'Estar\', \'Ti33_500a\')',
-    'validation_exp_cross2(\'Estar\', 1, \'Ti33_500a\', \'Ti33_500a\')'
+    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
+    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
+    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
+    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)'
     ])
 
     processes = []
@@ -22,3 +50,5 @@ if __name__ == '__main__':
         process.start()
     for process in processes:
         process.join()
+
+        

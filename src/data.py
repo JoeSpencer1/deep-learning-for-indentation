@@ -161,6 +161,7 @@ class ExpData(object):
 
         #
         # Scale nm to um for Ti33 files
+        # I'M PRETTY SURE THESE MULTI-LINE COMMENTED CAN BE DELETED.
         '''
         df["hm (um)"] = df["hmax(nm)"] / 1000
         df["C (GPA)"] = df["H(GPa)"] * df["hm (um)"] ** 2
@@ -180,9 +181,9 @@ class ExpData(object):
         # Scale dP/dh from hm to hm = 0.2um 
 
 # This is for Ti alloys
-#        df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
+        df["dP/dh (N/m)"] *= 0.2 / df["hm (um)"]
 # This is for the Yanbo's Ti alloys
-        df["dP/dh (N/m)"] *= 0.2 * 1000 / df["hmax(nm)"]
+#        df["dP/dh (N/m)"] *= 0.2 * 1000 / df["hmax(nm)"]
 
         # Scale c* from Berkovich to Conical
 #        df["dP/dh (N/m)"] *= 1.128 / 1.167

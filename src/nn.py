@@ -304,7 +304,7 @@ def validation_scaling(yname):
         f.write("scaling " + yname + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
 
 
-def validation_exp(yname, exp):
+def validation_exp(yname, exp, fac=1):
     '''
     This function uses data from FEM simulations and experiment. It forms a \
         multi-fidelity data set for this.
@@ -312,6 +312,9 @@ def validation_exp(yname, exp):
     datalow = FEMData(yname, [70])
     dataBerkovich = BerkovichData(yname)
     dataexp = ExpData("../data/" + exp + ".csv", yname)
+
+    if fac != 1:
+        dataexp.y *= fac
 
     ape = []
     y = []
@@ -332,7 +335,7 @@ def validation_exp(yname, exp):
 
     print(yname, "validation_exp", np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write("exp " + exp + " " + yname + " " + str(np.mean(ape, axis=0)) + " " + str(np.std(ape, axis=0)) + '\n')
+        f.write("exp " + exp + " " + str(fac) + " " + yname + " " + str(np.mean(ape, axis=0)) + " " + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -377,7 +380,7 @@ def validation_exp_cross(yname, tip, train_size):
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
-def validation_exp_cross2(yname, train_size, data1, data2):
+def validation_exp_cross2(yname, train_size, data1, data2, fac=1):
     '''
     This function uses a data from both FEM tests and Berkovich (3D indentation) \
         tests and then trains them against data from experiments (method 4).
@@ -389,6 +392,10 @@ def validation_exp_cross2(yname, train_size, data1, data2):
 
     ape = []
     y = []
+
+    if fac != 1:
+        dataexp1.y *= fac
+        dataexp2.y *= fac
 
     '''
     Shufflesplit trains the neural network. train_size is the proportion of the \
@@ -419,7 +426,7 @@ def validation_exp_cross2(yname, train_size, data1, data2):
 
     print(yname, "validation_exp_cross2", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write("cross2 " + data1 + " " + data2 + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross2 " + data1 + " " + data2 + yname + " " + str(fac) + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -630,50 +637,7 @@ def main(argument=None):
     '''
     if argument != None:
         exec(argument)
-    '''
-    validation_exp('Estar', 'Ti33_500a')
-    validation_exp_cross2('Estar', 1, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 2, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 3, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 4, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 5, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 6, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 8, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 10, 'Ti33_25a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 20, 'Ti33_25a', 'Ti33_500a')
-    
-    validation_exp('Estar', 'Ti33_500a')
-    validation_exp_cross2('Estar', 1, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 2, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 3, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 4, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 5, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 6, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 8, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 10, 'Ti33_500a', 'Ti33_500a')
-    validation_exp_cross2('Estar', 20, 'Ti33_500a', 'Ti33_500a')
-    '''
-    '''
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500c', 'Ti33_500c')
-
-    validation_joe('Estar', 20, 0, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 1, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 2, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 3, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 4, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 5, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 6, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 8, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    validation_joe('Estar', 20, 10, 'Ti33_25a', 'Ti33_500b', 'Ti33_500b')
-    '''
+        
     return
     #''
     validation_FEM("Estar", [50, 60, 70, 80], 70) # print yname, train_size, mean(mape), std(mape)
