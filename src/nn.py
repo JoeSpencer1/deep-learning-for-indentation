@@ -9,9 +9,9 @@ from sklearn.svm import SVR
 from sklearn.model_selection import KFold, LeaveOneOut, RepeatedKFold, ShuffleSplit
 
 import deepxde as dde
-from data import BerkovichData, ExpData, FEMData, ModelData
+from data import BerkovichData, ExpData, FEMData, ModelData, FEMDataT, BerkovichDataT, ExpDataT
 
-import multiprocessing
+import os
 '''
 General summary:
 Function                        Purpose
@@ -160,7 +160,7 @@ def validation_model(yname, train_size):
         mape.append(nn(data))
 
     with open('Output.txt', 'a') as f:
-        f.write("model " + yname + " " + str(train_size) + str(np.mean(mape, axis=0)) + str(np.std(mape, axis=0)) + '\n')
+        f.write("model " + yname + ' ' + str(train_size) + str(np.mean(mape, axis=0)) + str(np.std(mape, axis=0)) + '\n')
     print(yname, train_size)
     print(np.mean(mape), np.std(mape))
 
@@ -198,9 +198,9 @@ def validation_FEM(yname, angles, train_size):
         mape.append(dde.utils.apply(nn, (data,)))
 
     print(mape)
-    print(yname, "validation_FEM ", train_size, " ", np.mean(mape), " ", np.std(mape))
+    print(yname, "validation_FEM ", train_size, ' ', np.mean(mape), ' ', np.std(mape))
     with open('Output.txt', 'a') as f:
-        f.write("validation_FEM " + yname + " " + str(train_size) + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
+        f.write("validation_FEM " + yname + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
 
 
 def mfnn(data):
@@ -277,7 +277,7 @@ def validation_mf(yname, train_size):
         # mape.append(dde.utils.apply(mfgp, (data,)))
 
     with open('Output.txt', 'a') as f:
-        f.write("mf " + yname + " " + str(train_size) + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
+        f.write("mf " + yname + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
     print(mape)
     print(yname, "validation_mf ", train_size, np.mean(mape), np.std(mape))
 
@@ -301,10 +301,10 @@ def validation_scaling(yname):
 
     print(yname, "validation_scaling", np.mean(mape), np.std(mape))
     with open('Output.txt', 'a') as f:
-        f.write("scaling " + yname + " " + str(np.mean(mape, axis=0)) + " " + str(np.std(mape, axis=0)) + '\n')
+        f.write("scaling " + yname + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
 
 
-def validation_exp(yname, exp, fac=1):
+def validation_exp(yname, exp, fac=1, typ='err'):
     '''
     This function uses data from FEM simulations and experiment. It forms a \
         multi-fidelity data set for this.
@@ -334,8 +334,12 @@ def validation_exp(yname, exp, fac=1):
         y.append(res[2])
 
     print(yname, "validation_exp", np.mean(ape, axis=0), np.std(ape, axis=0))
-    with open('Output.txt', 'a') as f:
-        f.write("exp " + exp + " " + str(fac) + " " + yname + " " + str(np.mean(ape, axis=0)) + " " + str(np.std(ape, axis=0)) + '\n')
+    if typ == 'n':
+        with open('Output.txt', 'a') as f:
+            f.write("exp raw " + exp + ' ' + str(fac) + ' ' + yname + ' [' + str(np.mean(y)) + ' ' + str(np.std(y)) + ']\n')
+    else:
+        with open('Output.txt', 'a') as f:
+            f.write("exp " + exp + ' ' + str(fac) + ' ' + yname + ' ' + str(np.mean(ape, axis=0)) + ' ' + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -374,13 +378,13 @@ def validation_exp_cross(yname, tip, train_size):
         y.append(res[2])
 
     with open('Output.txt', 'a') as f:
-        f.write("cross " + yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross " + yname + ' ' + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print(yname, "validation_exp_cross", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
 
-def validation_exp_cross2(yname, train_size, data1, data2, fac=1):
+def validation_exp_cross2(yname, train_size, data1, data2, fac=1, typ='err'):
     '''
     This function uses a data from both FEM tests and Berkovich (3D indentation) \
         tests and then trains them against data from experiments (method 4).
@@ -425,8 +429,12 @@ def validation_exp_cross2(yname, train_size, data1, data2, fac=1):
         y.append(res[2])
 
     print(yname, "validation_exp_cross2", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
-    with open('Output.txt', 'a') as f:
-        f.write("cross2 " + data1 + " " + data2 + yname + " " + str(fac) + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+    if typ == 'n':
+        with open('Output.txt', 'a') as f:
+            f.write("cross2 raw " + data1 + ' ' + data2 + yname + ' ' + str(fac) + ' ' + str(train_size) + ' [' + str(np.mean(y)) + ' ' + str(np.std(y)) + ']\n')
+    else:
+        with open('Output.txt', 'a') as f:
+            f.write("cross2 " + data1 + ' ' + data2 + yname + ' ' + str(fac) + ' ' + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 
@@ -463,7 +471,7 @@ def validation_exp_cross3(yname, numitrs, expdata):
 
     print(yname, "validation_exp_cross3", np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write("cross3 " + yname + " " + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("cross3 " + yname + ' ' + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     print("Saved to  y.dat.")
     np.savetxt("y.dat", np.hstack(y))
@@ -514,7 +522,7 @@ def validation_exp_cross_transfer(yname, train_size, dataset):
         y.append(res[2])
 
     with open('Output.txt', 'a') as f:
-        f.write("crosstrans " + dataset  + yname + " " + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+        f.write("crosstrans " + dataset  + yname + ' ' + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print(yname)
     print(np.mean(ape, axis=0), np.std(ape, axis=0))
     np.savetxt(yname + ".dat", np.hstack(y).T)
@@ -625,8 +633,119 @@ def validation_joe(yname, tsize_1, tsize_2, train1_name, train2_name, test_name)
     
     print(yname, "validation_joe", tsize_1, ' ', tsize_2, np.mean(ape, axis=0), np.std(ape, axis=0))
     with open('Output.txt', 'a') as f:
-        f.write('joe ' + train1_name + " " + train2_name + " " + test_name + yname + " " + str(tsize_1) + '-' + str(tsize_2) + 
+        f.write('joe ' + train1_name + ' ' + train2_name + ' ' + test_name + yname + ' ' + str(tsize_1) + '-' + str(tsize_2) + 
                 str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
+    print("Saved to ", yname, ".dat.")
+    np.savetxt(yname + ".dat", np.hstack(y).T)
+
+def joenn(data, T):
+    '''
+    This is similar to the mfnn function, with an added temperature input.
+    '''
+    x_dim, y_dim = 4, 1
+    activation = "selu"
+    initializer = "LeCun normal"
+    regularization = ["l2", 0.01]
+    net = dde.maps.MfNN(
+        [x_dim] + [128] * 2 + [y_dim],
+        [8] * 2 + [y_dim],
+        activation,
+        initializer,
+        regularization=regularization,
+        residue=True,
+        trainable_low_fidelity=True,
+        trainable_high_fidelity=True,
+    )
+
+    model = dde.Model(data, net)
+    model.compile("adam", lr=0.0001, loss="MAPE", metrics=["MAPE", "APE SD"])
+    losshistory, train_state = model.train(epochs=30000)
+    # checker = dde.callbacks.ModelCheckpoint(
+    #     "model/model.ckpt", verbose=1, save_better_only=True, period=1000
+    # )
+    # losshistory, train_state = model.train(epochs=30000, callbacks=[checker])
+    # losshistory, train_state = model.train(epochs=5000, model_restore_path="model/model.ckpt-28000")
+    
+    T = T.reshape((1, 4))
+    estimate = model.predict(T)
+    print('Estimate = ', estimate)
+    
+    dde.saveplot(losshistory, train_state, issave=True, isplot=False)
+    return (
+        train_state.best_metrics[1],
+        train_state.best_metrics[3],
+        train_state.best_y[1],
+    )
+
+def validation_temperature(yname, train_size, dataexp, test_names, typ='err', temp=25):
+    dataFEM = FEMDataT(yname, [70])
+    dataBerkovich = BerkovichDataT(yname)
+
+    dataexp2 = []
+    test_names2 = []
+    # Stack all experimental data on top of each other
+    for file in dataexp:
+        dataexp2.append('../data/' + file + '.csv')
+    for file in test_names:
+        test_names2.append('../data/' + file + '.csv')
+    #print(dataexp2[:])
+    #print(test_names2[:])
+    dataexp2 = ExpDataT(dataexp2, yname)
+    datatest2 = ExpDataT(test_names2, yname)
+
+    ape = []
+    y = []
+
+    kf = ShuffleSplit(n_splits=10, train_size=train_size, random_state=0)
+    
+    if train_size > 0:
+        for train_index, _ in kf.split(dataexp2.X):
+            print("\nIteration: {}".format(len(ape)))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataFEM.X,
+                X_hi_train=np.vstack((dataBerkovich.X, dataexp2.X[train_index])),
+                y_lo_train=dataFEM.y,
+                y_hi_train=np.vstack((dataBerkovich.y, dataexp2.y[train_index])),
+                X_hi_test=datatest2.X,
+                y_hi_test=datatest2.y,
+                standardize=True
+            )
+            vals = np.mean(data.X_hi_test, axis=0)
+            vals[3] = temp
+            vals = vals.reshape((1, 4))
+            res = dde.utils.apply(joenn, (data, vals, ))
+            ape.append(res[:2])
+            y.append(res[2])
+    else:
+        for train_index in range(10):
+            print("\nIteration: {}".format(train_index))
+            print(train_index)
+            data = dde.data.MfDataSet(
+                X_lo_train=dataFEM.X,
+                X_hi_train=dataBerkovich.X,
+                y_lo_train=dataFEM.y,
+                y_hi_train=dataBerkovich.y,
+                X_hi_test=datatest2.X,
+                y_hi_test=datatest2.y,
+                standardize=True
+            )
+            vals = np.mean(data.X_hi_test, axis=0)
+            vals[3] = temp
+            vals = vals.reshape((1, 4))
+            res = dde.utils.apply(joenn, (data, vals, ))
+            ape.append(res[:2])
+            y.append(res[2])
+
+    teststring = ' '.join(test_names)
+    outstring = ' '.join(dataexp)
+    print(yname, "validation_temperature", train_size, np.mean(ape, axis=0), np.std(ape, axis=0))
+    if typ == 'n':
+        with open('Output.txt', 'a') as f:
+            f.write("temperature raw " + str(temp) + ' [' + teststring + '][' + outstring + ']' + str(train_size) + ' [' + str(np.mean(y)) + ' ' + str(np.std(y)) + ']\n')
+    else:
+        with open('Output.txt', 'a') as f:
+            f.write("temperature " + str(temp) + ' [' + teststring + '][' + outstring + ']' + str(train_size) + str(np.mean(ape, axis=0)) + str(np.std(ape, axis=0)) + '\n')
     print("Saved to ", yname, ".dat.")
     np.savetxt(yname + ".dat", np.hstack(y).T)
 

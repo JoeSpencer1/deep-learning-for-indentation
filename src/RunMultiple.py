@@ -8,36 +8,7 @@ def run_main(arg):
 if __name__ == '__main__':
 
     arguments = np.array([
-    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=2.0)',
-    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=1)',
-    'validation_exp(\'sigma_y\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 1, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 2, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 3, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 4, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 5, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 6, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 8, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 10, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)',
-    'validation_exp_cross2(\'sigma_y\', 20, \'Ti33_25a\', \'Ti33_25a\', fac=0.9)'
+        "validation_exp('Estar', 'Ti33_250a', typ='n')"
     ])
 
     processes = []
@@ -51,4 +22,25 @@ if __name__ == '__main__':
     for process in processes:
         process.join()
 
-        
+'''
+        "validation_temperature('Estar', 0, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 1, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 2, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 3, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 4, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 5, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 6, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 8, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 10, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 20, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=25)",
+        "validation_temperature('Estar', 0, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 1, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 2, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 3, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 4, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 5, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 6, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 8, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 10, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)",
+        "validation_temperature('Estar', 20, ['Ti33_25a', 'Ti33_250a'], ['Ti33_25a', 'Ti33_250a'], typ='n', temp=250)"
+'''
