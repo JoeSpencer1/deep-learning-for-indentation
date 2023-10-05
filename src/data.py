@@ -49,15 +49,16 @@ class FEMData(object):
         df = pd.read_csv("../data/FEM_{}deg.csv".format(self.angles[0]))
         df["E* (GPa)"] = Etoestar(df["E (GPa)"])
         df["sy/E*"] = df["sy (GPa)"] / df["E* (GPa)"]
-        df = df.loc[~((df["n"] > 0.3) & (df["sy/E*"] >= 0.03))]
+        # df = df.loc[~((df["n"] > 0.3) & (df["sy/E*"] >= 0.03))]
         #
-        # df = df.loc[df["n"] <= 0.3]
+        df = df.loc[df["n"] <= 0.3]
         # Scale c* from Conical to Berkovich
         # df["dP/dh (N/m)"] *= 1.167 / 1.128
         # Add noise
         # sigma = 0.2
         # df["E* (GPa)"] *= 1 + sigma * np.random.randn(len(df))
         # df["sy (GPa)"] *= 1 + sigma * np.random.randn(len(df))
+        #
         print(df.describe())
 
         self.X = df[["C (GPa)", "dP/dh (N/m)", "Wp/Wt"]].values
@@ -129,7 +130,7 @@ class ModelData(object):
         self.read()
 
     def read(self):
-        df = pd.read_csv("../data/model_{}.csv".format(self.model))
+        df = pd.read_csv("model_{}.csv".format(self.model))
         self.X = df[["C (GPa)", "dP/dh (N/m)", "WpWt"]].values
         if self.yname == "Estar":
             self.y = Etoestar(df["E (GPa)"].values)[:, None]
@@ -173,7 +174,7 @@ class ExpData(object):
         # Scale dP/dh from 3N to hm = 0.2um
 
 # This is for Al alloys
-        #df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
+#        df["dP/dh (N/m)"] *= 0.2 * (df["C (GPa)"] / 3) ** 0.5 * 10 ** (-1.5)
 
         
         # Scale dP/dh from Pm to hm = 0.2um

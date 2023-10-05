@@ -227,7 +227,7 @@ def gen_forward():
     with open("model_forward.csv", "w") as f:
         writer = csv.writer(f)
         writer.writerow(["n", "E (GPa)", "sy (GPa)", "C (GPa)", "dP/dh (N/m)", "WpWt"])
-        for _ in range(10000):
+        for _ in range(12000):
             E = random.uniform(10, 210)
             n = random.uniform(0, 0.5)
 #            sigma_y = random.uniform(0.03, 5.3)
@@ -263,8 +263,8 @@ def gen_inverse():
 def main():
     # print(inverse_model(27.4e9, 0.902, 4768e3 * 0.2 * (27.4 / 3)**0.5 * 10**(-1.5), 0.3, 0.2e-6, nu_i=0.07, E_i=1100e9))
     # test_inverse()
-    test_inverse_dual()
-    # gen_forward()
+    # test_inverse_dual()
+    gen_forward()
     # gen_inverse()
 
 

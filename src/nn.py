@@ -160,7 +160,7 @@ def validation_model(yname, train_size):
         mape.append(nn(data))
 
     with open('Output.txt', 'a') as f:
-        f.write("model " + yname + ' ' + str(train_size) + str(np.mean(mape, axis=0)) + str(np.std(mape, axis=0)) + '\n')
+        f.write("model " + yname + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
     print(yname, train_size)
     print(np.mean(mape), np.std(mape))
 
@@ -200,16 +200,37 @@ def validation_FEM(yname, angles, train_size):
     print(mape)
     print(yname, "validation_FEM ", train_size, ' ', np.mean(mape), ' ', np.std(mape))
     with open('Output.txt', 'a') as f:
-        f.write("validation_FEM " + yname + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
+        f.write("validation_FEM " + yname + ' ' + str(angles) + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
 
+def validation_high(yname, exp1, exp2, train_size):
+    datatest = ExpData("../data/" + exp1 + ".csv", yname)
+    datatrain = ExpData("../data/" + exp2 + ".csv", yname)
+
+    kf = ShuffleSplit(
+    n_splits=10, test_size=len(datatest.X) - train_size, random_state=0
+    )
+
+    mape = []
+    iter = 0
+    for train_index, test_index in kf.split(datatrain.X):
+        iter += 1
+        print("\nCross-validation iteration: {}".format(iter))
+
+        X_train, X_test = datatrain.X[train_index], datatest.X[test_index]
+        y_train, y_test = datatrain.y[train_index], datatest.y[test_index]
+
+        data = dde.data.DataSet(
+            X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test
+        )
+
+        mape.append(dde.utils.apply(nn, (data,)))
+
+    print(mape)
+    print(yname, "validation_high ", train_size, ' ', np.mean(mape), ' ', np.std(mape))
+    with open('Output.txt', 'a') as f:
+        f.write("validation_high " + yname + ' ' + exp1 + ' ' + exp2 + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
 
 def mfnn(data):
-    '''
-    This function at first did not appear to be called anywhere in the code, \
-        which left me a little concerned... It actually is called at various \
-        points. It is compared to the outputs of the different validation \
-        functions and the experimental data during training.
-    '''
     x_dim, y_dim = 3, 1
     activation = "selu"
     initializer = "LeCun normal"
@@ -227,12 +248,16 @@ def mfnn(data):
 
     model = dde.Model(data, net)
     model.compile("adam", lr=0.0001, loss="MAPE", metrics=["MAPE", "APE SD"])
+    #
     losshistory, train_state = model.train(epochs=30000)
+    #
     # checker = dde.callbacks.ModelCheckpoint(
     #     "model/model.ckpt", verbose=1, save_better_only=True, period=1000
     # )
     # losshistory, train_state = model.train(epochs=30000, callbacks=[checker])
-    # losshistory, train_state = model.train(epochs=5000, model_restore_path="model/model.ckpt-28000")
+    #
+    #losshistory, train_state = model.train(epochs=5000, model_restore_path="model/model.ckpt-28000")
+    #
 
     dde.saveplot(losshistory, train_state, issave=True, isplot=False)
     return (
@@ -241,21 +266,30 @@ def mfnn(data):
         train_state.best_y[1],
     )
 
-def validation_mf(yname, train_size):
+def validation_mf(yname, train_size, dlow, dhigh, nmod = 10000):
     '''
     mf in this function stands for multi-fidelity. This can either use the \
         mathematical model data combined with 2D FEM data or the 2D FEM data \
         combined with 3D (Berkovich) data. All references to it are commenyed \
         at first.
     '''
-    datalow = FEMData(yname, [70])
-    # datalow = ModelData(yname, 10000, "forward_n")
-    datahigh = BerkovichData(yname)
-    # datahigh = FEMData(yname, [70])
+    if dlow == 'FEM':
+        datalow = FEMData(yname, [70])
+    if dlow == 'mod':
+        datalow = ModelData(yname, nmod, "forward")
+    if dhigh == 'Berk':
+        datahigh = BerkovichData(yname)
+    if dhigh == 'FEM':
+        datahigh = FEMData(yname, [70])
 
-    kf = ShuffleSplit(
-        n_splits=10, test_size=len(datahigh.X) - train_size, random_state=0
-    )
+    if train_size < len(datahigh.X):
+        kf = ShuffleSplit(
+            n_splits=10, test_size=len(datahigh.X) - train_size, random_state=0
+        )
+    else:
+        kf = ShuffleSplit(
+            n_splits=10, test_size=10, random_state=0
+        )
     # kf = LeaveOneOut()
 
     mape = []
@@ -277,9 +311,9 @@ def validation_mf(yname, train_size):
         # mape.append(dde.utils.apply(mfgp, (data,)))
 
     with open('Output.txt', 'a') as f:
-        f.write("mf " + yname + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
+        f.write("mf " + yname + ' ' + dlow + ' ' + dhigh + ' ' + str(train_size) + ' ' + str(np.mean(mape, axis=0)) + ' ' + str(np.std(mape, axis=0)) + '\n')
     print(mape)
-    print(yname, "validation_mf ", train_size, np.mean(mape), np.std(mape))
+    print(yname, "validation_mf ", dlow, ' ', dhigh, ' ', train_size, ' ', np.mean(mape), np.std(mape))
 
 
 def validation_scaling(yname):
